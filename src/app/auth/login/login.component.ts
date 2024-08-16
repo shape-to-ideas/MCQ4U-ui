@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
             if (loginResponse.data) {
                 this.sharedService.setStorageData(
                     LOCAL_STORAGE_KEYS.USER,
-                    JSON.stringify(loginResponse),
+                    JSON.stringify(loginResponse.data),
                 );
                 await this.router.navigate([PAGE_ROUTES.DASHBOARD]);
             } else if (loginResponse.status < 200) {

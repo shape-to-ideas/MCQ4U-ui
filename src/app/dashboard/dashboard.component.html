@@ -1,4 +1,22 @@
-<div>
-    <h1>dashboard works!</h1>
-    <button class="rounded p-2 bg-blue-600 text-white" (click)="logOut()">Logout</button>
+<div class="flex flex-wrap items-center w-full justify-between">
+    <div class="flex">
+
+    </div>
+    <div class="mr-auto">
+        <button class="rounded p-2 bg-blue-600 text-white" (click)="logOut()">Logout</button>
+        <button class="rounded p-2 bg-blue-600 text-white" (click)="redirectToCreateQuestion()">Create Question</button>
+    </div>
+</div>
+<div class="w-full">
+    <h2>Questions</h2>
+    <div class="" *ngIf="questionsList.length">
+        <div class="w-full mb-4" *ngFor="let question of questionsList">
+            <p class="flex flex-row text-lg">{{question.title}}</p>
+            <div class="flex flex-row">
+                <p class="w-1/4 text-sm" *ngFor="let option of question.options">
+                    {{option.key}}. {{option.title}}
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
