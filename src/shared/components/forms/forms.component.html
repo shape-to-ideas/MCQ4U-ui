@@ -1,0 +1,45 @@
+<form *ngIf="formGroup" class="w-full" [formGroup]="formGroup">
+    <div class="my-5" *ngFor="let formInput of formConfigs">
+
+        <!--        FormArray-->
+        <div *ngIf="formInput.isFormArray;else inputField" [formArrayName]="formInput.name" class="flex-row justify-center">
+            <p>{{formInput.name}}</p>
+            <div *ngFor="let formArrayRoot of formInput.formArray; let i = index" class="flex items-center">
+                                <!--<label *ngIf="[formTypes.INPUT, formTypes.TEXTAREA, formTypes.PASSWORD].includes(formArrayRoot.type)"
+                                       class="text-base"
+                                       for="{{i}}">{{ formArrayRoot.label }}: </label>-->
+                <input class="rounded-md border w-5/12 mb-3" placeholder="{{ formArrayRoot.label }}"
+                       *ngIf="[formTypes.INPUT, formTypes.PASSWORD].includes(formArrayRoot.type)"
+                       formControlName="{{i}}" type="{{formArrayRoot.type}}">
+                <textarea class="rounded-md border w-full mb-3" *ngIf="[formTypes.TEXTAREA].includes(formArrayRoot.type)"
+                          placeholder="{{ formArrayRoot.label }}"
+                          formControlName="{{i}}"></textarea>
+            </div>
+        </div>
+
+        <!--        Normal Fields-->
+        <ng-template #inputField>
+            <label *ngIf="[''].includes(formInput.type)"
+                   class="text-base"
+                   for="{{formInput.name}}">{{ formInput.label }}: </label>
+            <input class="w-full p-2 rounded-md border-2 border-black" *ngIf="[formTypes.INPUT, formTypes.PASSWORD].includes(formInput.type)" placeholder="{{formInput.label}}"
+                   formControlName="{{formInput.name}}" type="{{formInput.type}}">
+
+            <textarea class="rounded-md border" *ngIf="[formTypes.TEXTAREA].includes(formInput.type)"
+                      formControlName="{{formInput.name}}"></textarea>
+        </ng-template>
+        <div *ngFor="let validation of formInput.validations">
+            <div *ngIf="formGroup.controls[formInput.name].invalid && formGroup.controls[formInput.name].dirty"
+                 class="alert">
+                <div class="text-sm text-red-400" *ngIf="formGroup.controls[formInput.name].hasError(validation.name)">
+                    {{ validation.errorMessage }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngFor="let formInput of formConfigs">
+        <button *ngIf="formInput.type === formTypes.SUBMIT_BUTTON" class="w-full border p-2 rounded bg-black text-white font-bold"
+                (click)="submitForm()">{{ formInput.label }}
+        </button>
+    </div>
+</form>

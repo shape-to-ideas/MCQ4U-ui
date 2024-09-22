@@ -1,0 +1,28 @@
+<div *ngIf="formConfigs">
+    <div *ngFor="let formArrayRoot of formConfigs.formArray; let i = index">
+        <label *ngIf="[formTypes.INPUT, formTypes.TEXTAREA, formTypes.PASSWORD].includes(formArrayRoot.type)"
+               class="text-base"
+               for="{{formArrayRoot.name}}">{{ formArrayRoot.label }}: </label>
+        <input class="rounded-md border"
+               *ngIf="[formTypes.INPUT, formTypes.PASSWORD].includes(formArrayRoot.type)"
+               formControlName="{{formArrayRoot.name}}" type="{{formArrayRoot.type}}">
+        <textarea class="rounded-md border" *ngIf="[formTypes.TEXTAREA].includes(formArrayRoot.type)"
+                  formControlName="{{i}}"></textarea>
+
+        <!--                nested formArray-->
+        <div *ngIf="formArrayRoot.isFormArray">
+            <div *ngFor="let formArrayChild of formArrayRoot.formArray; let j = index">
+                <label
+                    *ngIf="[formTypes.INPUT, formTypes.TEXTAREA, formTypes.PASSWORD].includes(formArrayChild.type)"
+                    class="text-base"
+                    for="{{j}}">{{ formArrayChild.label }}: </label>
+                <input class="rounded-md border"
+                       *ngIf="[formTypes.INPUT, formTypes.PASSWORD].includes(formArrayChild.type)"
+                       formControlName="{{j}}" type="{{formArrayChild.type}}">
+                <textarea class="rounded-md border" *ngIf="[formTypes.TEXTAREA].includes(formArrayChild.type)"
+                          formControlName="{{j}}"></textarea>
+            </div>
+        </div>
+    </div>
+
+</div>

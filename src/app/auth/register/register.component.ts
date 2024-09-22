@@ -2,7 +2,13 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SharedService } from '../../../shared/shared.service';
-import { LOCAL_STORAGE_KEYS, PAGE_ROUTES } from '../../../shared/constants';
+import {
+    API_PATHS,
+    FORM_TYPES,
+    FormConfigTypes,
+    LOCAL_STORAGE_KEYS,
+    PAGE_ROUTES,
+} from '../../../shared/constants';
 import { environment } from '../../../environments/environment';
 import axios from 'axios';
 
@@ -12,39 +18,129 @@ import axios from 'axios';
     styleUrl: './register.component.sass',
 })
 export class RegisterComponent {
-    registerFormGroup = new FormGroup({
-        lastName: new FormControl('', [Validators.required]),
-        firstName: new FormControl('', [Validators.required]),
-        email: new FormControl('', [Validators.required, Validators.email]),
-        phone: new FormControl('', [
-            Validators.required,
-            Validators.minLength(10),
-            Validators.maxLength(10),
-        ]),
-        password: new FormControl('', [
-            Validators.required,
-            Validators.minLength(5),
-        ]),
-        confirmPassword: new FormControl('', [
-            Validators.required,
-            Validators.minLength(5),
-        ]),
-        isAdmin: new FormControl('', [Validators.required]),
-    });
+    registerFormConfigs: FormConfigTypes[] = [
+        {
+            name: 'first_name',
+            label: 'First Name',
+            type: FORM_TYPES.INPUT,
+            defaultValue: '',
+            validations: [
+                {
+                    name: 'required',
+                    value: true,
+                    errorMessage: 'First name is required',
+                },
+            ],
+        },
+        {
+            name: 'last_name',
+            label: 'Last Name',
+            type: FORM_TYPES.INPUT,
+            defaultValue: '',
+            validations: [
+                {
+                    name: 'required',
+                    value: true,
+                    errorMessage: 'Last Name is required',
+                },
+            ],
+        },
+        {
+            name: 'email',
+            label: 'Email',
+            type: FORM_TYPES.INPUT,
+            defaultValue: '',
+            validations: [
+                {
+                    name: 'required',
+                    value: true,
+                    errorMessage: 'Email is required',
+                },
+            ],
+        },
+        {
+            name: 'phone',
+            label: 'Phone',
+            type: FORM_TYPES.INPUT,
+            defaultValue: '',
+            validations: [
+                {
+                    name: 'required',
+                    value: true,
+                    errorMessage: 'Phone number is required',
+                },
+                {
+                    name: 'minLength',
+                    value: 10,
+                    errorMessage: 'Phone number should be of 10 digit',
+                },
+                {
+                    name: 'maxLength',
+                    value: 10,
+                    errorMessage: 'Phone number should be of 10 digit',
+                },
+            ],
+        },
+        {
+            name: 'password',
+            label: 'Password',
+            type: FORM_TYPES.PASSWORD,
+            defaultValue: '',
+            validations: [
+                {
+                    name: 'required',
+                    value: true,
+                    errorMessage: 'Password is required',
+                },
+                {
+                    name: 'minLength',
+                    value: 5,
+                    errorMessage: 'Password must be at least 5 digits long',
+                },
+            ],
+        },
+        {
+            name: 'confirm_password',
+            label: 'Confirm Password',
+            type: FORM_TYPES.PASSWORD,
+            defaultValue: '',
+            validations: [
+                {
+                    name: 'required',
+                    value: true,
+                    errorMessage: 'Password Confirmation is required',
+                },
+                {
+                    name: 'minLength',
+                    value: 5,
+                    errorMessage: 'Password must be at least 5 digits long',
+                },
+            ],
+        },
+        {
+            name: 'submit',
+            label: 'Submit',
+            type: FORM_TYPES.SUBMIT_BUTTON,
+        },
+    ];
 
     constructor(
         private router: Router,
         private sharedService: SharedService,
     ) {}
 
-    async submitRegistration() {
-        this.registerFormGroup.markAsDirty();
-        console.log('----', this.registerFormGroup.value);
-        if (this.registerFormGroup.valid) {
-            const registerUrl = `${environment.apiUrl}/api/v1/user/register`;
+    async submitRegistration(registerFormGroup: FormGroup) {
+        if (registerFormGroup.valid) {
+            if (
+                registerFormGroup.controls['password'].value !==
+                registerFormGroup.controls['confirm_password'].value
+            ) {
+                alert('Passwords do not match');
+            }
+            const registerUrl = `${environment.apiUrl}${API_PATHS.REGISTER}`;
             const loginResponse = await axios.post(
                 registerUrl,
-                this.registerFormGroup.value,
+                registerFormGroup.value,
             );
             if (loginResponse.data) {
                 this.sharedService.setStorageData(

@@ -1,74 +1,7 @@
-<div class="container text-center w-full text-3xl">
-    <h1 class="">Register</h1>
-    <form [formGroup]="registerFormGroup">
-        <div class="">
-            <div class="p-2">
-                <label class="text-base" for="firstName">First Name: </label>
-                <input class="rounded-md border" id="firstName" formControlName="firstName" type="text">
-            </div>
-            <div class="p-2">
-                <label class="text-base" for="lastName">Last Name: </label>
-                <input class="rounded-md border" id="lastName" formControlName="lastName" type="text">
-            </div>
-            <div class="p-2">
-                <label class="text-base" for="email">Email: </label>
-                <input class="rounded-md border" id="email" formControlName="email" type="email">
-            </div>
-            <div class="p-2">
-                <label class="text-base" for="phone">Phone: </label>
-                <input class="rounded-md border" id="phone" formControlName="phone" type="text">
-            </div>
-            <div *ngIf="registerFormGroup.controls.phone.invalid && (registerFormGroup.controls.phone.dirty)"
-                 class="alert">
-                <div class="text-sm text-red-400" *ngIf="registerFormGroup.controls.phone.hasError('required')">
-                    Phone number is required.
-                </div>
-                <div class="text-sm text-red-400" *ngIf="registerFormGroup.controls.phone.hasError('minlength')">
-                    Phone must be at least 10 characters long.
-                </div>
-                <div class="text-sm text-red-400" *ngIf="registerFormGroup.controls.phone.hasError('maxlength')">
-                    Phone cannot be more that 10 character long.
-                </div>
-            </div>
+<div class="flex justify-center flex-col mt-20 mb-1 ml-40 mr-40">
+    <h1 class="flex w-full justify-center font-bold text-3xl">Register</h1>
+    <app-forms [formConfigs]="registerFormConfigs" (submitFormEvent)="submitRegistration($event)"></app-forms>
 
-            <div class="p-2">
-                <label class="text-base" for="password">Password: </label>
-                <input id="password" class="border" formControlName="password" type="password">
-            </div>
-            <div *ngIf="registerFormGroup.controls.password.invalid && (registerFormGroup.controls.password.dirty)"
-                 class="alert">
-                <div class="text-sm text-red-400" *ngIf="registerFormGroup.controls.password.hasError('required')">
-                    Password is required.
-                </div>
-                <div class="text-sm text-red-400" *ngIf="registerFormGroup.controls.password.hasError('minlength')">
-                    Password must be at least 10 characters long.
-                </div>
-            </div>
-
-            <div class="p-2">
-                <label class="text-base" for="confirmPassword">Confirm Password: </label>
-                <input id="confirmPassword" class="border" formControlName="confirmPassword" type="password">
-            </div>
-            <div *ngIf="registerFormGroup.controls.confirmPassword.invalid && (registerFormGroup.controls.confirmPassword.dirty)"
-                 class="alert">
-                <div class="text-sm text-red-400" *ngIf="registerFormGroup.controls.confirmPassword.hasError('required')">
-                    Password is required.
-                </div>
-                <div class="text-sm text-red-400" *ngIf="registerFormGroup.controls.confirmPassword.hasError('minlength')">
-                    Password must be at least 10 characters long.
-                </div>
-            </div>
-
-            <div class="p-2">
-                <label class="text-base" for="isAdmin">Register as Admin: </label>
-                <input id="isAdmin" class="border" value="true" formControlName="isAdmin" type="checkbox">
-            </div>
-
-
-            <button class="border p-2 rounded bg-blue-600 text-white" (click)="submitRegistration()">Submit</button>
-        </div>
-    </form>
-
-    <button class="border p-2 rounded bg-orange-400 text-white" (click)="navigateToLogin()">Login</button>
+    <button class="border p-2 rounded bg-gray-300 text-black my-5 font-bold" (click)="navigateToLogin()">Login</button>
 </div>
 

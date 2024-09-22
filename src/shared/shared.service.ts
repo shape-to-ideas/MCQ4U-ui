@@ -1,3 +1,5 @@
+import { LOCAL_STORAGE_KEYS, UserSessionData } from './constants';
+
 export class SharedService {
     constructor() {}
 
@@ -11,5 +13,10 @@ export class SharedService {
 
     deleteStorageData(key: string): void {
         return localStorage.removeItem(key);
+    }
+
+    getUserSessionDetails() {
+        const userDetailString = this.getStorageData(LOCAL_STORAGE_KEYS.USER);
+        return JSON.parse(userDetailString) as UserSessionData;
     }
 }

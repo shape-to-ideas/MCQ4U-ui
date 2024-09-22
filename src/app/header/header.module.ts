@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { QuestionsComponent } from './questions/questions.component';
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-    declarations: [QuestionsComponent],
+    declarations: [],
     imports: [CommonModule, SharedModule],
 })
-export class DashboardModule {}
+export class HeaderModule {}

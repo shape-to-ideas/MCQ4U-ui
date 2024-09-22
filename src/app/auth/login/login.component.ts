@@ -4,7 +4,13 @@ import axios from 'axios';
 import { Router } from '@angular/router';
 
 import { environment } from '../../../environments/environment';
-import { LOCAL_STORAGE_KEYS, PAGE_ROUTES } from '../../../shared/constants';
+import {
+    API_PATHS,
+    FORM_TYPES,
+    FormConfigTypes,
+    LOCAL_STORAGE_KEYS,
+    PAGE_ROUTES,
+} from '../../../shared/constants';
 import { SharedService } from '../../../shared/shared.service';
 
 @Component({
@@ -13,17 +19,54 @@ import { SharedService } from '../../../shared/shared.service';
     styleUrl: './login.component.sass',
 })
 export class LoginComponent implements OnInit {
-    loginFormGroup = new FormGroup({
-        phone: new FormControl('', [
-            Validators.required,
-            Validators.minLength(10),
-            Validators.maxLength(10),
-        ]),
-        password: new FormControl('', [
-            Validators.required,
-            Validators.minLength(5),
-        ]),
-    });
+    loginFormConfigs: FormConfigTypes[] = [
+        {
+            name: 'phone',
+            label: 'Phone',
+            type: FORM_TYPES.INPUT,
+            defaultValue: '',
+            validations: [
+                {
+                    name: 'required',
+                    value: true,
+                    errorMessage: 'Phone number is required',
+                },
+                {
+                    name: 'minLength',
+                    value: 10,
+                    errorMessage: 'Phone number should be of 10 digit',
+                },
+                {
+                    name: 'maxLength',
+                    value: 10,
+                    errorMessage: 'Phone number should be of 10 digit',
+                },
+            ],
+        },
+        {
+            name: 'password',
+            label: 'Password',
+            type: FORM_TYPES.PASSWORD,
+            defaultValue: '',
+            validations: [
+                {
+                    name: 'required',
+                    value: true,
+                    errorMessage: 'Password is required',
+                },
+                {
+                    name: 'minLength',
+                    value: 5,
+                    errorMessage: 'Password must be at least 5 digits long',
+                },
+            ],
+        },
+        {
+            name: 'submit',
+            label: 'Submit',
+            type: FORM_TYPES.SUBMIT_BUTTON,
+        },
+    ];
 
     constructor(
         private router: Router,
@@ -36,13 +79,12 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    async submitLogin() {
-        this.loginFormGroup.markAsDirty();
-        if (this.loginFormGroup.valid) {
-            const loginUrl = `${environment.apiUrl}/api/v1/user/login`;
+    async submitLogin(loginFormGroup: FormGroup) {
+        if (loginFormGroup.valid) {
+            const loginUrl = `${environment.apiUrl}${API_PATHS.LOGIN}`;
             const loginResponse = await axios.post(loginUrl, {
-                phone: this.loginFormGroup.controls.phone.value,
-                password: this.loginFormGroup.controls.password.value,
+                phone: loginFormGroup.controls['phone'].value,
+                password: loginFormGroup.controls['password'].value,
             });
             if (loginResponse.data) {
                 this.sharedService.setStorageData(

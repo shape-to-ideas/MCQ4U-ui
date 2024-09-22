@@ -1,42 +1,6 @@
-<div class="container text-center w-full text-3xl">
-    <h1 class="">Login</h1>
-    <form [formGroup]="loginFormGroup">
-        <div class="">
-            <div class="p-2">
-                <label class="text-base" for="phone">Phone: </label>
-                <input class="rounded-md border" id="phone" formControlName="phone" type="text">
-            </div>
-            <div *ngIf="loginFormGroup.controls.phone.invalid && (loginFormGroup.controls.phone.dirty)"
-                 class="alert">
-                <div class="text-sm text-red-400" *ngIf="loginFormGroup.controls.phone.hasError('required')">
-                    Phone number is required.
-                </div>
-                <div class="text-sm text-red-400" *ngIf="loginFormGroup.controls.phone.hasError('minlength')">
-                    Phone must be at least 10 characters long.
-                </div>
-                <div class="text-sm text-red-400" *ngIf="loginFormGroup.controls.phone.hasError('maxlength')">
-                    Phone cannot be more that 10 character long.
-                </div>
-            </div>
-
-            <div class="p-2">
-                <label class="text-base" for="password">Password: </label>
-                <input id="password" class="border" formControlName="password" type="password">
-            </div>
-            <div *ngIf="loginFormGroup.controls.password.invalid && (loginFormGroup.controls.password.dirty)"
-                 class="alert">
-                <div class="text-sm text-red-400" *ngIf="loginFormGroup.controls.password.hasError('required')">
-                    Password is required.
-                </div>
-                <div class="text-sm text-red-400" *ngIf="loginFormGroup.controls.password.hasError('minlength')">
-                    Password must be at least 10 characters long.
-                </div>
-            </div>
-
-            <button class="border p-2 rounded bg-blue-600 text-white" (click)="submitLogin()">Submit</button>
-        </div>
-    </form>
-
-    <button class="border p-2 rounded bg-orange-400 text-white" (click)="navigateToRegister()">Register</button>
+<div class="flex justify-center flex-col mt-20 mb-1 ml-40 mr-40">
+    <h1 class="flex w-full justify-center font-bold text-3xl">Login</h1>
+    <app-forms class="" [formConfigs]="loginFormConfigs" (submitFormEvent)="submitLogin($event)"></app-forms>
+    <button class="border p-2 rounded bg-gray-300 text-black my-5 font-bold" (click)="navigateToRegister()">Register</button>
 </div>
 
