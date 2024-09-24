@@ -4,17 +4,27 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedService } from './shared.service';
 import { FormsComponent } from './components/forms/forms.component';
 import { FormArrayComponent } from './components/forms/form-array/form-array.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [FormsComponent, FormArrayComponent],
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
-    providers: [SharedService],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ToastModule,
+        BrowserAnimationsModule,
+    ],
+    providers: [SharedService, MessageService],
     exports: [
         ReactiveFormsModule,
         CommonModule,
         FormsModule,
         FormsComponent,
         FormArrayComponent,
+        ToastModule,
     ],
 })
 export class SharedModule {}

@@ -33,8 +33,8 @@ export class AppComponent implements OnInit {
         }
     }
 
-    redirectToCreateQuestion() {
-        this.router.navigate([PAGE_ROUTES.QUESTIONS]);
+    openAddTopicModal() {
+        console.log(' Add topic');
     }
 
     getTopicsList() {

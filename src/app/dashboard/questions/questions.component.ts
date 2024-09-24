@@ -1,13 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FORM_TYPES, FormConfigTypes } from '../../../shared/constants';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-questions',
     templateUrl: './questions.component.html',
     styleUrl: './questions.component.sass',
 })
-export class QuestionsComponent {
+export class QuestionsComponent implements OnInit {
+    topicName = '';
+    topicId = '';
     currentQuestionIndex = 0;
     questionsFields: FormConfigTypes = {
         name: `Question ${this.currentQuestionIndex}`,
@@ -93,9 +96,17 @@ export class QuestionsComponent {
             type: FORM_TYPES.SUBMIT_BUTTON,
         },
     ];
+    protected readonly formTypes = FORM_TYPES;
 
-    constructor() {
+    constructor(private activatedRoute: ActivatedRoute) {
         this.addQuestionField();
+    }
+
+    ngOnInit(): void {
+        this.activatedRoute.queryParams.subscribe(async (params) => {
+            this.topicId = params['topicId'];
+            this.topicName = params['topicName'];
+        });
     }
 
     addQuestionField() {
@@ -106,5 +117,9 @@ export class QuestionsComponent {
         this.createQuestionFormConfigs.push(questionFields);
     }
 
-    protected readonly formTypes = FORM_TYPES;
+    submitForm(questionsFormGroup: FormGroup) {
+        if (questionsFormGroup.valid) {
+            console.log(questionsFormGroup.value);
+        }
+    }
 }

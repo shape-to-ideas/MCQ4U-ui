@@ -62,7 +62,6 @@ export class FormsComponent implements OnInit, DoCheck {
     }
 
     submitForm() {
-        console.log(this.formGroup?.value);
         this.formGroup?.markAsDirty();
         this.submitFormEvent.emit(this.formGroup);
     }
@@ -101,7 +100,6 @@ export class FormsComponent implements OnInit, DoCheck {
         if (!config.formArray?.length) {
             return null;
         }
-        const formArrays = [];
         return new FormArray(
             config.formArray.map((formConfig: FormConfigTypes) => {
                 if (formConfig.isFormArray && formConfig.formArray?.length) {

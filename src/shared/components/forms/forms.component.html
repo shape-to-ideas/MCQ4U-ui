@@ -3,15 +3,12 @@
 
         <!--        FormArray-->
         <div *ngIf="formInput.isFormArray;else inputField" [formArrayName]="formInput.name" class="flex-row justify-center">
-            <p>{{formInput.name}}</p>
+            <p class="mb-2">{{formInput.name}}</p>
             <div *ngFor="let formArrayRoot of formInput.formArray; let i = index" class="flex items-center">
-                                <!--<label *ngIf="[formTypes.INPUT, formTypes.TEXTAREA, formTypes.PASSWORD].includes(formArrayRoot.type)"
-                                       class="text-base"
-                                       for="{{i}}">{{ formArrayRoot.label }}: </label>-->
-                <input class="rounded-md border w-5/12 mb-3" placeholder="{{ formArrayRoot.label }}"
+                <input class="rounded-md p-2 border-2 border-black w-full mb-3" placeholder="{{ formArrayRoot.label }}"
                        *ngIf="[formTypes.INPUT, formTypes.PASSWORD].includes(formArrayRoot.type)"
                        formControlName="{{i}}" type="{{formArrayRoot.type}}">
-                <textarea class="rounded-md border w-full mb-3" *ngIf="[formTypes.TEXTAREA].includes(formArrayRoot.type)"
+                <textarea class="rounded-md p-2 border-2 border-black w-full mb-3" *ngIf="[formTypes.TEXTAREA].includes(formArrayRoot.type)"
                           placeholder="{{ formArrayRoot.label }}"
                           formControlName="{{i}}"></textarea>
             </div>

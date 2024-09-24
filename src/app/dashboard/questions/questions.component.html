@@ -1,4 +1,7 @@
-<app-forms [formConfigs]="createQuestionFormConfigs" [baseFormValues]="formBaseValues"></app-forms>
-<button class="border p-2 rounded bg-red-400 text-white"
-        (click)="addQuestionField()">Add Question
-</button>
+<div class="px-10 py-10">
+    <h1 class="text-center w-full mb-2 text-3xl font-bold">{{topicName}}</h1>
+    <app-forms [formConfigs]="createQuestionFormConfigs" (submitFormEvent)="submitForm($event)" [baseFormValues]="formBaseValues"></app-forms>
+    <button class="border my-2 p-2 rounded bg-red-400 text-white"
+            (click)="addQuestionField()">Add Question
+    </button>
+</div>
