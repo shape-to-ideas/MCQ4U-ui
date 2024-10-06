@@ -3,7 +3,7 @@ import { SharedService } from '../../shared/shared.service';
 import { API_PATHS, HEADERS, PAGE_ROUTES } from '../../shared/constants';
 import axios from 'axios';
 import { environment } from '../../environments/environment';
-import { Questions } from '../../shared/interfaces';
+import { QuestionsResponse } from '../../shared/interfaces';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 
@@ -13,9 +13,10 @@ import { MessageService } from 'primeng/api';
     styleUrl: './dashboard.component.sass',
 })
 export class DashboardComponent implements OnInit {
-    questionsList: Questions[] = [];
+    questionsList: QuestionsResponse[] = [];
     topicName = '';
     topicId = '';
+    showLoader = false;
 
     constructor(
         private sharedService: SharedService,
@@ -32,6 +33,7 @@ export class DashboardComponent implements OnInit {
                 const token = this.sharedService.getUserSessionDetails().token;
 
                 const questionsListApiPath = `${environment.apiUrl}${API_PATHS.QUESTIONS}?topic_id=${this.topicId}`;
+                this.showLoader = true;
                 const questionsListApiResponse = await axios.get(
                     questionsListApiPath,
                     {
@@ -39,8 +41,10 @@ export class DashboardComponent implements OnInit {
                     },
                 );
                 this.questionsList = questionsListApiResponse.data;
+                this.showLoader = false;
             });
         } catch (err: unknown) {
+            this.showLoader = false;
             this.messageService.add({
                 severity: 'error',
                 summary: 'Something went wrong.',

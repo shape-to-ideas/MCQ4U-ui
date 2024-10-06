@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SharedService } from '../../../shared/shared.service';
 import {
     API_PATHS,
+    ERROR_MESSAGES,
     FORM_TYPES,
     FormConfigTypes,
     LOCAL_STORAGE_KEYS,
@@ -11,6 +12,7 @@ import {
 } from '../../../shared/constants';
 import { environment } from '../../../environments/environment';
 import axios from 'axios';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-register',
@@ -55,6 +57,11 @@ export class RegisterComponent {
                     name: 'required',
                     value: true,
                     errorMessage: 'Email is required',
+                },
+                {
+                    name: 'email',
+                    value: true,
+                    errorMessage: 'Email is incorrect',
                 },
             ],
         },
@@ -127,6 +134,7 @@ export class RegisterComponent {
     constructor(
         private router: Router,
         private sharedService: SharedService,
+        private messageService: MessageService,
     ) {}
 
     async submitRegistration(registerFormGroup: FormGroup) {
@@ -135,7 +143,10 @@ export class RegisterComponent {
                 registerFormGroup.controls['password'].value !==
                 registerFormGroup.controls['confirm_password'].value
             ) {
-                alert('Passwords do not match');
+                this.messageService.add({
+                    severity: 'error',
+                    detail: ERROR_MESSAGES.PASSWORD_MISMATCH,
+                });
             }
             const registerUrl = `${environment.apiUrl}${API_PATHS.REGISTER}`;
             const loginResponse = await axios.post(

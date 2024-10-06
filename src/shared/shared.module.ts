@@ -7,6 +7,7 @@ import { FormArrayComponent } from './components/forms/form-array/form-array.com
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
     declarations: [FormsComponent, FormArrayComponent],
@@ -25,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         FormsComponent,
         FormArrayComponent,
         ToastModule,
+        ProgressSpinnerModule,
     ],
 })
 export class SharedModule {}

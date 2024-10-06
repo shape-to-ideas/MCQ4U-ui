@@ -1,7 +1,73 @@
 <div class="px-10 py-10">
-    <h1 class="text-center w-full mb-2 text-3xl font-bold">{{topicName}}</h1>
-    <app-forms [formConfigs]="createQuestionFormConfigs" (submitFormEvent)="submitForm($event)" [baseFormValues]="formBaseValues"></app-forms>
-    <button class="border my-2 p-2 rounded bg-red-400 text-white"
-            (click)="addQuestionField()">Add Question
-    </button>
+    <h1 class="text-center w-full mb-2 text-3xl font-bold">{{ topicName }}</h1>
+    <form [formGroup]="formGroup" class="w-full">
+        <div formArrayName="question">
+            <div
+                *ngFor="let questionGroup of question?.controls; let i = index"
+                [formGroupName]="i" class="my-10"
+            >
+                <h3>Question - {{ i + 1 }}</h3>
+                <textarea class="w-full p-2 rounded-md border-2 border-black" formControlName="title"
+                          placeholder="Title"></textarea>
+                <ng-container [ngTemplateOutlet]="formValidations"
+                              [ngTemplateOutletContext]="{questionGroup: questionGroup, fieldName: 'title'}"></ng-container>
+                <div class="two-grid-layout">
+                    <div>
+                        <input class="{{optionsFieldCssString}}" type="text" formControlName="optionA"
+                               placeholder="A" />
+                        <ng-container [ngTemplateOutlet]="formValidations"
+                                      [ngTemplateOutletContext]="{questionGroup: questionGroup, fieldName: 'optionA'}"></ng-container>
+                    </div>
+                    <div>
+                        <input class="{{optionsFieldCssString}}" type="text" formControlName="optionB"
+                               placeholder="B" />
+                        <ng-container [ngTemplateOutlet]="formValidations"
+                                      [ngTemplateOutletContext]="{questionGroup: questionGroup, fieldName: 'optionB'}"></ng-container>
+                    </div>
+                    <div>
+                        <input class="{{optionsFieldCssString}}" type="text" formControlName="optionC"
+                               placeholder="C" />
+                        <ng-container [ngTemplateOutlet]="formValidations"
+                                      [ngTemplateOutletContext]="{questionGroup: questionGroup, fieldName: 'optionC'}"></ng-container>
+                    </div>
+                    <div>
+                        <input class="{{optionsFieldCssString}}" type="text" formControlName="optionD"
+                               placeholder="D" />
+                        <ng-container [ngTemplateOutlet]="formValidations"
+                                      [ngTemplateOutletContext]="{questionGroup: questionGroup, fieldName: 'optionD'}"></ng-container>
+                    </div>
+                    <div>
+                        <select class="{{optionsFieldCssString}}" name="correctAnswer" id="correctAnswer"
+                                formControlName="correctAnswer">
+                            <option value="" disabled>Correct Answer</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                        <ng-container [ngTemplateOutlet]="formValidations"
+                                      [ngTemplateOutletContext]="{questionGroup: questionGroup, fieldName: 'correctAnswer'}"></ng-container>
+                    </div>
+                </div>
+                <input class="w-full p-2 my-2 rounded-md border-2 border-black" type="text" formControlName="tags"
+                       placeholder="tags" />
+            </div>
+        </div>
+        <div class="flex justify-between mt-5">
+            <button class="border p-2 rounded bg-gray-300 text-black font-bold" (click)="addQuestion()">Add Question
+            </button>
+            <button class="border p-2 rounded bg-black text-white font-bold" (click)="submitForm()">Submit
+            </button>
+        </div>
+
+    </form>
 </div>
+
+<ng-template #formValidations let-questionGroup='questionGroup' let-fieldName='fieldName'>
+    <div *ngIf="questionGroup.dirty">
+        <div class="text-sm text-red-400"
+             *ngIf="questionGroup.get([fieldName])?.hasError('required')">
+            This field is required
+        </div>
+    </div>
+</ng-template>

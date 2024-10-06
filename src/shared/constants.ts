@@ -1,5 +1,3 @@
-import { Validators } from '@angular/forms';
-
 export const LOCAL_STORAGE_KEYS = {
     USER: 'user',
 };
@@ -56,4 +54,15 @@ export interface TopicsResponse {
     created_by: string;
     name: string;
     _id: { $oid: string };
+}
+
+export const ERROR_MESSAGES = {
+    QUESTION_SUBMIT_ERROR: 'Error while submitting questions.',
+    PASSWORD_MISMATCH: 'Password confirmation does not match',
+};
+
+export interface ApiError {
+    code: string;
+    message: string;
+    response: { data: { detail: string; status_code: number } };
 }

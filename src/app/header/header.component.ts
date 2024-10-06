@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../shared/shared.service';
 import { Router } from '@angular/router';
-import { Questions } from '../../shared/interfaces';
 import { LOCAL_STORAGE_KEYS, PAGE_ROUTES } from '../../shared/constants';
 
 @Component({
