@@ -1,17 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-    API_PATHS,
-    HEADERS,
-    PAGE_ROUTES,
-    ERROR_MESSAGES,
-} from '../../../shared/constants';
-import { QuestionsPayload } from '../../../shared/interfaces';
-import axios, { AxiosResponse } from 'axios';
-import { environment } from '../../../environments/environment';
-import { SharedService } from '../../../shared/shared.service';
+import { PAGE_ROUTES, ERROR_MESSAGES } from '../../../shared/constants';
 import { MessageService } from 'primeng/api';
+import { RequestsService } from '../../../shared/requests/requests.service';
 
 @Component({
     selector: 'app-questions',
@@ -23,15 +15,13 @@ export class QuestionsComponent implements OnInit {
     topicId = '';
     formGroup: FormGroup;
     optionsFieldCssString = 'w-80 p-2 my-2 rounded-md border-2 border-black';
-    token = '';
 
     constructor(
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private sharedService: SharedService,
         private messageService: MessageService,
+        private requestService: RequestsService,
     ) {
-        this.token = this.sharedService.getUserSessionDetails().token;
         this.formGroup = new FormGroup({
             question: new FormArray([
                 new FormGroup({
@@ -81,7 +71,9 @@ export class QuestionsComponent implements OnInit {
                     },
                 );
 
-                await this.insertQuestions({ data: questionsPayload });
+                await this.requestService.insertQuestions({
+                    data: questionsPayload,
+                });
                 this.router.navigate([PAGE_ROUTES.DASHBOARD], {
                     queryParams: {
                         topicId: this.topicId,
@@ -95,18 +87,6 @@ export class QuestionsComponent implements OnInit {
                 });
             }
         }
-    }
-
-    insertQuestions(questionPayload: {
-        data: QuestionsPayload[];
-    }): Promise<AxiosResponse<any, any>> {
-        return axios.post(
-            `${environment.apiUrl}${API_PATHS.QUESTIONS}/create`,
-            questionPayload,
-            {
-                headers: { [HEADERS.Authorization]: this.token },
-            },
-        );
     }
 
     mapQuestionsFormPayload(value: Record<string, string>) {

@@ -8,6 +8,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { RequestsService } from './requests/requests.service';
+import { TopicsStore } from './store/topics.store';
 
 @NgModule({
     declarations: [FormsComponent, FormArrayComponent],
@@ -18,7 +20,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         ToastModule,
         BrowserAnimationsModule,
     ],
-    providers: [SharedService, MessageService],
+    providers: [SharedService, MessageService, RequestsService, TopicsStore],
     exports: [
         ReactiveFormsModule,
         CommonModule,

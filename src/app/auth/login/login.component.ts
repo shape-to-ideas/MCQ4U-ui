@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import axios from 'axios';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { environment } from '../../../environments/environment';
 import {
-    API_PATHS,
     FORM_TYPES,
     FormConfigTypes,
     LOCAL_STORAGE_KEYS,
     PAGE_ROUTES,
 } from '../../../shared/constants';
-import { SharedService } from '../../../shared/shared.service';
+import { getStorageData } from '../../../shared/utils/storage';
+import { RequestsService } from '../../../shared/requests/requests.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-login',
@@ -70,31 +69,32 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private sharedService: SharedService,
+        private requestsService: RequestsService,
+        private messageService: MessageService,
     ) {}
 
     ngOnInit(): void {
-        if (this.sharedService.getStorageData(LOCAL_STORAGE_KEYS.USER)) {
+        if (getStorageData(LOCAL_STORAGE_KEYS.USER)) {
             this.router.navigate([PAGE_ROUTES.DASHBOARD]);
         }
     }
 
     async submitLogin(loginFormGroup: FormGroup) {
-        if (loginFormGroup.valid) {
-            const loginUrl = `${environment.apiUrl}${API_PATHS.LOGIN}`;
-            const loginResponse = await axios.post(loginUrl, {
-                phone: loginFormGroup.controls['phone'].value,
-                password: loginFormGroup.controls['password'].value,
-            });
-            if (loginResponse.data) {
-                this.sharedService.setStorageData(
-                    LOCAL_STORAGE_KEYS.USER,
-                    JSON.stringify(loginResponse.data),
-                );
+        try {
+            if (loginFormGroup.valid) {
+                const loginPayload = {
+                    phone: loginFormGroup.controls['phone'].value as string,
+                    password: loginFormGroup.controls['password']
+                        .value as string,
+                };
+                await this.requestsService.userLogin(loginPayload);
                 await this.router.navigate([PAGE_ROUTES.DASHBOARD]);
-            } else if (loginResponse.status < 200) {
-                alert('Error in login API'); /**@TODO implement toast*/
             }
+        } catch (err) {
+            this.messageService.add({
+                severity: 'error',
+                summary: err.message,
+            });
         }
     }
 

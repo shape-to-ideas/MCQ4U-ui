@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from '../../shared/shared.service';
-import { API_PATHS, HEADERS, PAGE_ROUTES } from '../../shared/constants';
-import axios from 'axios';
-import { environment } from '../../environments/environment';
-import { QuestionsResponse } from '../../shared/interfaces';
+import { PAGE_ROUTES } from '../../shared/constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { RequestsService } from '../../shared/requests/requests.service';
+import { QuestionsResponse } from '../../shared/requests/response.interface';
+import { TopicsStore } from '../../shared/store/topics.store';
 
 @Component({
     selector: 'app-dashboard',
@@ -17,29 +16,28 @@ export class DashboardComponent implements OnInit {
     topicName = '';
     topicId = '';
     showLoader = false;
+    isAdmin = false;
 
     constructor(
-        private sharedService: SharedService,
+        private requestsService: RequestsService,
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private messageService: MessageService,
+        private topicsStore: TopicsStore,
     ) {}
 
     async ngOnInit() {
+        this.topicsStore.updateState({ name: 'something' });
         try {
             this.activatedRoute.queryParams.subscribe(async (params) => {
                 this.topicId = params['topicId'];
                 this.topicName = params['topicName'];
-                const token = this.sharedService.getUserSessionDetails().token;
 
-                const questionsListApiPath = `${environment.apiUrl}${API_PATHS.QUESTIONS}?topic_id=${this.topicId}`;
                 this.showLoader = true;
-                const questionsListApiResponse = await axios.get(
-                    questionsListApiPath,
-                    {
-                        headers: { [HEADERS.Authorization]: token },
-                    },
-                );
+                const questionsListApiResponse =
+                    await this.requestsService.getQuestionsByTopicId(
+                        this.topicId,
+                    );
                 this.questionsList = questionsListApiResponse.data;
                 this.showLoader = false;
             });
@@ -54,6 +52,12 @@ export class DashboardComponent implements OnInit {
 
     redirectToCreateQuestion() {
         this.router.navigate([PAGE_ROUTES.QUESTIONS], {
+            queryParams: { topicId: this.topicId, topicName: this.topicName },
+        });
+    }
+
+    redirectToAttemptQuestion() {
+        this.router.navigate([PAGE_ROUTES.ATTEMPT_QUESTIONS], {
             queryParams: { topicId: this.topicId, topicName: this.topicName },
         });
     }

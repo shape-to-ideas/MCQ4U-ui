@@ -87,7 +87,7 @@ export class FormsComponent implements OnInit, DoCheck {
                       case 'email':
                           return Validators.email;
                       default:
-                          return Validators.required; /**@TODO default to be fixed*/
+                          return Validators.nullValidator;
                   }
               })
             : [];

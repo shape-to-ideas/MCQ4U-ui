@@ -9,7 +9,7 @@ import { LOCAL_STORAGE_KEYS, PAGE_ROUTES } from './constants';
 import { getStorageData } from './utils/storage';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AdminAuthGuard implements CanActivate {
     constructor(private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
             return true;
         }
 
-        // not logged in so redirect to login page with the return url
+        // not admin so redirect to login page with the return url
         this.router.navigate([PAGE_ROUTES.LOGIN], {
             queryParams: { returnUrl: state.url },
         });

@@ -1,18 +1,14 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SharedService } from '../../../shared/shared.service';
 import {
-    API_PATHS,
     ERROR_MESSAGES,
     FORM_TYPES,
     FormConfigTypes,
-    LOCAL_STORAGE_KEYS,
     PAGE_ROUTES,
 } from '../../../shared/constants';
-import { environment } from '../../../environments/environment';
-import axios from 'axios';
 import { MessageService } from 'primeng/api';
+import { RequestsService } from '../../../shared/requests/requests.service';
 
 @Component({
     selector: 'app-register',
@@ -33,6 +29,7 @@ export class RegisterComponent {
                     errorMessage: 'First name is required',
                 },
             ],
+            className: '',
         },
         {
             name: 'last_name',
@@ -133,7 +130,7 @@ export class RegisterComponent {
 
     constructor(
         private router: Router,
-        private sharedService: SharedService,
+        private requestService: RequestsService,
         private messageService: MessageService,
     ) {}
 
@@ -147,20 +144,21 @@ export class RegisterComponent {
                     severity: 'error',
                     detail: ERROR_MESSAGES.PASSWORD_MISMATCH,
                 });
+                return;
             }
-            const registerUrl = `${environment.apiUrl}${API_PATHS.REGISTER}`;
-            const loginResponse = await axios.post(
-                registerUrl,
-                registerFormGroup.value,
-            );
-            if (loginResponse.data) {
-                this.sharedService.setStorageData(
-                    LOCAL_STORAGE_KEYS.USER,
-                    JSON.stringify(loginResponse),
-                );
-                await this.router.navigate([PAGE_ROUTES.DASHBOARD]);
-            } else if (loginResponse.status < 200) {
-                alert('Error in login API'); /**@TODO implement toast*/
+            const registerPayload = {
+                ...registerFormGroup.value,
+                is_admin: Boolean(registerFormGroup.value.is_admin),
+            };
+            try {
+                const registrationResponse =
+                    await this.requestService.registerUser(registerPayload);
+                console.log(registrationResponse);
+            } catch (e) {
+                this.messageService.add({
+                    severity: 'error',
+                    detail: ERROR_MESSAGES.REGISTRATIONS_ERROR,
+                });
             }
         }
     }

@@ -2,13 +2,15 @@
     <div class="my-5" *ngFor="let formInput of formConfigs">
 
         <!--        FormArray-->
-        <div *ngIf="formInput.isFormArray;else inputField" [formArrayName]="formInput.name" class="flex-row justify-center">
-            <p class="mb-2">{{formInput.name}}</p>
+        <div *ngIf="formInput.isFormArray;else inputField" [formArrayName]="formInput.name"
+             class="flex-row justify-center">
+            <p class="mb-2">{{ formInput.name }}</p>
             <div *ngFor="let formArrayRoot of formInput.formArray; let i = index" class="flex items-center">
                 <input class="rounded-md p-2 border-2 border-black w-full mb-3" placeholder="{{ formArrayRoot.label }}"
                        *ngIf="[formTypes.INPUT, formTypes.PASSWORD].includes(formArrayRoot.type)"
                        formControlName="{{i}}" type="{{formArrayRoot.type}}">
-                <textarea class="rounded-md p-2 border-2 border-black w-full mb-3" *ngIf="[formTypes.TEXTAREA].includes(formArrayRoot.type)"
+                <textarea class="rounded-md p-2 border-2 border-black w-full mb-3"
+                          *ngIf="[formTypes.TEXTAREA].includes(formArrayRoot.type)"
                           placeholder="{{ formArrayRoot.label }}"
                           formControlName="{{i}}"></textarea>
             </div>
@@ -19,7 +21,9 @@
             <label *ngIf="[''].includes(formInput.type)"
                    class="text-base"
                    for="{{formInput.name}}">{{ formInput.label }}: </label>
-            <input class="w-full p-2 rounded-md border-2 border-black" *ngIf="[formTypes.INPUT, formTypes.PASSWORD].includes(formInput.type)" placeholder="{{formInput.label}}"
+            <input class="{{formInput.className ? formInput.className : 'w-full p-2 rounded-md border-2 border-black'}}"
+                   *ngIf="[formTypes.INPUT, formTypes.PASSWORD].includes(formInput.type)"
+                   placeholder="{{formInput.label}}"
                    formControlName="{{formInput.name}}" type="{{formInput.type}}">
 
             <textarea class="rounded-md border" *ngIf="[formTypes.TEXTAREA].includes(formInput.type)"
@@ -28,14 +32,16 @@
         <div *ngFor="let validation of formInput.validations">
             <div *ngIf="formGroup.controls[formInput.name].invalid && formGroup.controls[formInput.name].dirty"
                  class="alert">
-                <div class="text-sm text-red-400" *ngIf="formGroup.controls[formInput.name].hasError(validation.name.toLowerCase())">
+                <div class="text-sm text-red-400"
+                     *ngIf="formGroup.controls[formInput.name].hasError(validation.name.toLowerCase())">
                     {{ validation.errorMessage }}
                 </div>
             </div>
         </div>
     </div>
     <div *ngFor="let formInput of formConfigs">
-        <button *ngIf="formInput.type === formTypes.SUBMIT_BUTTON" class="w-full border p-2 rounded bg-black text-white font-bold"
+        <button *ngIf="formInput.type === formTypes.SUBMIT_BUTTON"
+                class="w-full border p-2 rounded bg-black text-white font-bold"
                 (click)="submitForm()">{{ formInput.label }}
         </button>
     </div>

@@ -1,15 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {
-    API_PATHS,
-    HEADERS,
-    LOCAL_STORAGE_KEYS,
-    PAGE_ROUTES,
-    TopicsResponse,
-} from '../shared/constants';
+import { PAGE_ROUTES } from '../shared/constants';
 import { Router } from '@angular/router';
-import { SharedService } from '../shared/shared.service';
-import axios from 'axios';
-import { environment } from '../environments/environment';
+import { getUserSessionDetails } from '../shared/utils/storage';
+import { RequestsService } from '../shared/requests/requests.service';
+import { Topic } from '../shared/requests/response.interface';
 
 @Component({
     selector: 'app-root',
@@ -19,15 +13,16 @@ import { environment } from '../environments/environment';
 export class AppComponent implements OnInit {
     title = 'MCQ4U-UI';
     isUserLoggedIn = false;
-    topics: TopicsResponse[] = [];
+    topics: Topic[] = [];
+    isAdmin = false;
     constructor(
         private router: Router,
-        private sharedService: SharedService,
+        private requestsService: RequestsService,
     ) {}
 
     ngOnInit() {
-        const user = this.sharedService.getStorageData(LOCAL_STORAGE_KEYS.USER);
-        if (user) {
+        const user = getUserSessionDetails();
+        if (user?.token) {
             this.isUserLoggedIn = true;
             this.getTopicsList();
         }
@@ -37,15 +32,8 @@ export class AppComponent implements OnInit {
         console.log(' Add topic');
     }
 
-    getTopicsList() {
-        const token = this.sharedService.getUserSessionDetails().token;
-        axios
-            .get(`${environment.apiUrl}${API_PATHS.TOPICS}`, {
-                headers: { [HEADERS.Authorization]: token },
-            })
-            .then((response) => {
-                this.topics = response.data;
-            });
+    async getTopicsList() {
+        this.topics = await this.requestsService.fetchTopicList();
     }
 
     redirectToTopic(topicId: string, topicName: string) {

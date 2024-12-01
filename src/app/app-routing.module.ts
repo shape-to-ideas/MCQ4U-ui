@@ -6,6 +6,7 @@ import { AuthGuard } from '../shared/auth.guard';
 import { PAGE_ROUTES } from '../shared/constants';
 import { RegisterComponent } from './auth/register/register.component';
 import { QuestionsComponent } from './dashboard/questions/questions.component';
+import { AttemptQuestionsComponent } from './dashboard/questions/attempt-questions/attempt-questions.component';
 
 const routes: Routes = [
     { path: '', redirectTo: PAGE_ROUTES.LOGIN, pathMatch: 'full' },
@@ -19,6 +20,11 @@ const routes: Routes = [
     {
         path: PAGE_ROUTES.QUESTIONS,
         component: QuestionsComponent,
+        canActivate: [AuthGuard],
+    },
+    {
+        path: PAGE_ROUTES.ATTEMPT_QUESTIONS,
+        component: AttemptQuestionsComponent,
         canActivate: [AuthGuard],
     },
 ];
