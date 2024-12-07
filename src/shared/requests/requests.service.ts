@@ -15,10 +15,14 @@ import { LoginResponse, Topic } from './response.interface';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuestionsPayload } from './request.interface';
+import { UserStore } from '../store/user.store';
 
 @Injectable()
 export class RequestsService {
-    constructor(private router: Router) {
+    constructor(
+        private router: Router,
+        private userStore: UserStore,
+    ) {
         axios.interceptors.request.use((config) => {
             const token = getUserSessionDetails()?.token;
             if (token) {
@@ -72,6 +76,7 @@ export class RequestsService {
                 LOCAL_STORAGE_KEYS.USER,
                 JSON.stringify(loginResponse.data),
             );
+            this.userStore.updateState({ token: loginResponse.data.token });
             return loginResponse.data;
         } catch (error) {
             throw error;

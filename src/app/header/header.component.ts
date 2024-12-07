@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LOCAL_STORAGE_KEYS, PAGE_ROUTES } from '../../shared/constants';
-import { deleteStorageData, getStorageData } from '../../shared/utils/storage';
+import { deleteStorageData } from '../../shared/utils/storage';
 import { TopicsStore } from '../../shared/store/topics.store';
+import { UserStore } from '../../shared/store/user.store';
 
 @Component({
     selector: 'app-header',
@@ -14,20 +15,18 @@ export class HeaderComponent implements OnInit {
     constructor(
         private topicsStore: TopicsStore,
         private router: Router,
+        private userStore: UserStore,
     ) {}
 
     ngOnInit() {
-        const user = getStorageData(LOCAL_STORAGE_KEYS.USER);
-        if (user) {
-            this.isLoggedIn = true;
-        }
-        this.topicsStore.state$.subscribe((state) => {
-            console.log(state);
+        this.userStore.state$.subscribe((user) => {
+            this.isLoggedIn = !!user.token;
         });
     }
 
     logOut(): void {
         deleteStorageData(LOCAL_STORAGE_KEYS.USER);
+        this.userStore.updateState({ token: '' });
         this.router.navigate([PAGE_ROUTES.LOGIN]);
     }
 

@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { RequestsService } from '../../shared/requests/requests.service';
 import { QuestionsResponse } from '../../shared/requests/response.interface';
 import { TopicsStore } from '../../shared/store/topics.store';
+import { UserStore } from '../../shared/store/user.store';
 
 @Component({
     selector: 'app-dashboard',
@@ -23,11 +24,9 @@ export class DashboardComponent implements OnInit {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private messageService: MessageService,
-        private topicsStore: TopicsStore,
     ) {}
 
     async ngOnInit() {
-        this.topicsStore.updateState({ name: 'something' });
         try {
             this.activatedRoute.queryParams.subscribe(async (params) => {
                 this.topicId = params['topicId'];

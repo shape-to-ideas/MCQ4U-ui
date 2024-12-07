@@ -95,8 +95,8 @@ export class AttemptQuestionsComponent implements OnInit {
                     };
                 })
                 .filter((question: QuestionAttemptPayload) => question.option);
-            // await this.requsestsService.attemptQuestions(submissionPayload);
-            this.router.navigate([PAGE_ROUTES.ATTEMPT_QUESTIONS], {
+            // await this.requestsService.attemptQuestions(submissionPayload);
+            await this.router.navigate([PAGE_ROUTES.DASHBOARD], {
                 queryParams: {
                     topicId: this.topicId,
                     topicName: this.topicName,

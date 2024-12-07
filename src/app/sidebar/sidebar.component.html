@@ -1,0 +1,9 @@
+<div class="h-full bg-gray-300" *ngIf="isUserLoggedIn">
+    <div class="p-4">
+        <button class="w-full rounded p-2 bg-white text-xs text-black" (click)="openAddTopicModal()">Add Topic</button>
+    </div>
+    <div class="border-t border-gray-400">
+        <p class="text-base font-bold text-center my-2">Topics</p>
+        <p *ngFor="let topic of topics" (click)="redirectToTopic(topic._id.$oid, topic.name)" class="cursor-pointer text-xs mx-4 text-left my-2">{{topic.name}}</p>
+    </div>
+</div>

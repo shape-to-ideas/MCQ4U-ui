@@ -10,11 +10,17 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { AuthGuard } from '../shared/auth.guard';
 import { HeaderComponent } from './header/header.component';
 import { NgOptimizedImage } from '@angular/common';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 const APP_MODULES = [AuthModule, DashboardModule];
 
 @NgModule({
-    declarations: [AppComponent, DashboardComponent, HeaderComponent],
+    declarations: [
+        AppComponent,
+        DashboardComponent,
+        HeaderComponent,
+        SidebarComponent,
+    ],
     imports: [
         ...APP_MODULES,
         BrowserModule,
