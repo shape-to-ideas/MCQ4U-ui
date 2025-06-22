@@ -31,7 +31,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             if [ ! -d "/home/ubuntu/mcq4u-ui" ]; then
-              git clone https://github.com/shape-to-ideas/MCQ4U-ui.git /home/${{ secrets.EC2_HOST }}/mcq4u-ui
+              git clone https://github.com/shape-to-ideas/MCQ4U-ui.git /home/${{ secrets.EC2_USER }}/mcq4u-ui
             fi
             cd /home/ubuntu/mcq4u-ui
             git pull origin main
