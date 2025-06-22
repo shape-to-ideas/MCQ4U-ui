@@ -36,4 +36,3 @@ jobs:
             cd /home/ubuntu/mcq4u-ui
             git pull origin main
             docker compose up --build -d
-            EOF
