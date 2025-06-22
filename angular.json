@@ -24,7 +24,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/mcq4-u-ui",
+            "outputPath": "dist/mcq4u-ui",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
