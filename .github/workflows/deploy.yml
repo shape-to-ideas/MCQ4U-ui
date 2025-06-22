@@ -1,0 +1,40 @@
+name: Deploy MCQ4U-UI App to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy via SSH to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+#      - name: Add environment variables to .env
+#        run: |
+#          echo AUTH_TRUST_HOST=true >> .env
+
+      - name: Set up SSH key
+        run: |
+          echo "${{ secrets.EC2_KEY }}" > key.pem
+          chmod 600 key.pem
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+          # If folder doesn't exist, clone the repo
+            if [ ! -d "/home/ubuntu/mcq4u-ui" ]; then
+              git clone https://github.com/shape-to-ideas/MCQ4U-ui.git /home/${{ secrets.EC2_HOST }}/mcq4u-ui
+            fi
+            cd /home/ubuntu/mcq4u-ui
+            git pull origin main
+            docker compose up --build -d
+            EOF

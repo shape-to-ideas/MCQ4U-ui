@@ -1,8 +1,8 @@
 # Stage 1: Build Angular app
 FROM node:20-alpine AS builder
-
+ARG APP_NAME=mcq4u-ui
 # Set working directory
-WORKDIR /app
+WORKDIR /$APP_NAME
 
 # Install dependencies
 COPY package.json package-lock.json ./
@@ -18,7 +18,7 @@ RUN npm run build -- --configuration=production
 FROM nginx:alpine
 
 # Copy built Angular app to Nginx public directory
-COPY --from=builder /app/dist/mcq4-u-ui/browser /usr/share/nginx/html
+COPY --from=builder /$APP_NAME/dist/mcq4-u-ui/browser /usr/share/nginx/html
 
 # Optional: Replace default Nginx config (recommended for Angular routing)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
