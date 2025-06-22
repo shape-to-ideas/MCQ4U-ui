@@ -6,6 +6,7 @@ import {
     FORM_TYPES,
     FormConfigTypes,
     LOCAL_STORAGE_KEYS,
+    MESSAGE_SERVICE_SEVERITY,
     PAGE_ROUTES,
 } from '../../../shared/constants';
 import { getStorageData } from '../../../shared/utils/storage';
@@ -92,7 +93,7 @@ export class LoginComponent implements OnInit {
             }
         } catch (err) {
             this.messageService.add({
-                severity: 'error',
+                severity: MESSAGE_SERVICE_SEVERITY.ERROR,
                 summary: err.message,
             });
         }

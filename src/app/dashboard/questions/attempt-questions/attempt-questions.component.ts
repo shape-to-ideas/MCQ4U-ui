@@ -5,7 +5,10 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RequestsService } from '../../../../shared/requests/requests.service';
 import { QuestionAttemptPayload } from '../../../../shared/requests/request.interface';
 import { AttemptedQuestionsResponse } from '../../../../shared/requests/response.interface';
-import { PAGE_ROUTES } from '../../../../shared/constants';
+import {
+    MESSAGE_SERVICE_SEVERITY,
+    PAGE_ROUTES,
+} from '../../../../shared/constants';
 
 interface QuestionAttemptFormFields {
     attemptedOption: string;
@@ -49,7 +52,7 @@ export class AttemptQuestionsComponent implements OnInit {
         } catch (err: unknown) {
             this.showLoader = false;
             this.messageService.add({
-                severity: 'error',
+                severity: MESSAGE_SERVICE_SEVERITY.ERROR,
                 summary: 'Something went wrong.',
             });
         }
@@ -95,7 +98,7 @@ export class AttemptQuestionsComponent implements OnInit {
                     };
                 })
                 .filter((question: QuestionAttemptPayload) => question.option);
-            // await this.requestsService.attemptQuestions(submissionPayload);
+            await this.requestsService.attemptQuestions(submissionPayload);
             await this.router.navigate([PAGE_ROUTES.DASHBOARD], {
                 queryParams: {
                     topicId: this.topicId,

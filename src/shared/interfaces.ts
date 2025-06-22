@@ -3,7 +3,7 @@ export interface Option {
     key: string;
 }
 
-export interface JwtTokenValues {
+export interface UserSessionData {
     is_admin: boolean;
     id: string;
     expiry: number;

@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { LOCAL_STORAGE_KEYS, UserSessionData } from '../constants';
-import { getStorageData } from '../utils/storage';
+import { UserSessionData } from '../interfaces';
 
 @Injectable({
     providedIn: 'root',
 })
 export class UserStore {
     private initialState: UserSessionData = {
-        token: getStorageData(LOCAL_STORAGE_KEYS.USER),
+        email: '',
+        expiry: 0,
+        first_name: '',
+        id: '',
+        is_admin: false,
+        last_name: '',
     };
 
     // BehaviorSubject holds the current state
@@ -28,5 +32,9 @@ export class UserStore {
     updateState(partialState: Partial<UserSessionData>) {
         const newState = { ...this.state, ...partialState };
         this.stateSubject.next(newState);
+    }
+
+    resetState(): void {
+        this.stateSubject.next(this.initialState);
     }
 }

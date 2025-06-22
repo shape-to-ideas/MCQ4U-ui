@@ -14,16 +14,24 @@
     <div class="text-center w-full">
         <p-progressSpinner *ngIf="showLoader" ariaLabel="loading" />
     </div>
-    <ng-template *ngIf="isAdmin">
-        <p *ngIf="!questionsList.length && !showLoader">This is still a fresh space. Add question to this topics.</p>
-        <button class="border-2 mt-5 border-black rounded p-2 bg-white text-black text-sm"
-                (click)="redirectToCreateQuestion()">Add Questions
-        </button>
+    <ng-template *ngIf="showBanner; else questionListing">
+        <p class="text-4xl">
+            Welcome to MCQ4U. We assist you in preparing for exams with relevant topics so that you don't have to look any
+            further than this
+        </p>
     </ng-template>
-    <ng-template ngIf="{{!isAdmin}}">
-        <p *ngIf="!questionsList.length && !showLoader">No Questions added to this Topic by the Author</p>
-        <button *ngIf="questionsList.length" class="border-2 mt-5 border-black rounded p-2 bg-black text-white text-sm"
-                (click)="redirectToAttemptQuestion()">Attempt Questions
-        </button>
+    <ng-template #questionListing>
+        <ng-template [ngIf]="isAdmin && !showBanner">
+            <p *ngIf="!questionsList.length && !showLoader">This is still a fresh space. Add question to this topics.</p>
+            <button class="border-2 mt-5 border-black rounded p-2 bg-white text-black text-sm"
+                    (click)="redirectToCreateQuestion()">Add Questions
+            </button>
+        </ng-template>
+        <ng-template [ngIf]="!isAdmin && !showBanner">
+            <p *ngIf="!questionsList.length && !showLoader">No Questions added to this Topic by the Author</p>
+            <button *ngIf="questionsList.length" class="border-2 mt-5 border-black rounded p-2 bg-black text-white text-sm"
+                    (click)="redirectToAttemptQuestion()">Attempt Questions
+            </button>
+        </ng-template>
     </ng-template>
 </div>

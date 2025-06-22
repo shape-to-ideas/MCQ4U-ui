@@ -1,7 +1,7 @@
-// import Jwt from 'jsonwebtoken';
-
-import { LOCAL_STORAGE_KEYS, UserSessionData } from '../constants';
-import { JwtTokenValues } from '../interfaces';
+import { LOCAL_STORAGE_KEYS } from '../constants';
+import { jwtDecode } from 'jwt-decode';
+import { UserSessionData } from '../interfaces';
+import { LoginResponse } from '../requests/response.interface';
 
 export function getStorageData(key: string): string {
     return localStorage.getItem(key) ?? '';
@@ -18,11 +18,11 @@ export function deleteStorageData(key: string): void {
 export function getUserSessionDetails() {
     const userDetailString = getStorageData(LOCAL_STORAGE_KEYS.USER);
     if (userDetailString) {
-        return JSON.parse(userDetailString) as UserSessionData;
+        return JSON.parse(userDetailString) as LoginResponse;
     }
     return null;
 }
 
-// export function resolveJwtToken(token: string) {
-//     return Jwt.verify(token, 'mysecret');
-// }
+export function resolveJwtToken(token: string) {
+    return jwtDecode(token);
+}

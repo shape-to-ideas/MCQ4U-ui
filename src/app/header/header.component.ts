@@ -20,13 +20,14 @@ export class HeaderComponent implements OnInit {
 
     ngOnInit() {
         this.userStore.state$.subscribe((user) => {
-            this.isLoggedIn = !!user.token;
+            this.isLoggedIn = !!user.id;
         });
     }
 
     logOut(): void {
         deleteStorageData(LOCAL_STORAGE_KEYS.USER);
-        this.userStore.updateState({ token: '' });
+        this.userStore.resetState();
+        this.topicsStore.resetState();
         this.router.navigate([PAGE_ROUTES.LOGIN]);
     }
 

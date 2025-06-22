@@ -1,6 +1,7 @@
 import {
     deleteStorageData,
     getUserSessionDetails,
+    resolveJwtToken,
     setStorageData,
 } from '../utils/storage';
 import { environment } from '../../environments/environment';
@@ -16,6 +17,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuestionsPayload } from './request.interface';
 import { UserStore } from '../store/user.store';
+import { UserSessionData } from '../interfaces';
 
 @Injectable()
 export class RequestsService {
@@ -76,7 +78,10 @@ export class RequestsService {
                 LOCAL_STORAGE_KEYS.USER,
                 JSON.stringify(loginResponse.data),
             );
-            this.userStore.updateState({ token: loginResponse.data.token });
+            const userData = resolveJwtToken(
+                loginResponse.data.token,
+            ) as UserSessionData;
+            this.userStore.updateState(userData);
             return loginResponse.data;
         } catch (error) {
             throw error;
@@ -106,5 +111,11 @@ export class RequestsService {
             `${environment.apiUrl}${API_PATHS.ATTEMPT_QUESTIONS}`,
             attemptPayload,
         );
+    }
+
+    createTopics(topics: string[]): Promise<AxiosResponse<Topic[]>> {
+        return axios.post(`${environment.apiUrl}${API_PATHS.CREATE_TOPICS}`, {
+            topic_names: topics,
+        });
     }
 }

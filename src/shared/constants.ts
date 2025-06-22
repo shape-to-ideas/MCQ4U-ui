@@ -16,11 +16,8 @@ export enum API_PATHS {
     QUESTIONS = '/api/v1/questions',
     ATTEMPTED_QUESTIONS = '/api/v1/user/attempted-questions',
     TOPICS = '/api/v1/topics',
+    CREATE_TOPICS = '/api/v1/questions/topics',
     ATTEMPT_QUESTIONS = '/api/v1/user/attempt-questions',
-}
-
-export interface UserSessionData {
-    token: string;
 }
 
 export const HEADERS = {
@@ -59,6 +56,7 @@ export const ERROR_MESSAGES = {
     PASSWORD_MISMATCH: 'Password confirmation does not match',
     REGISTRATIONS_ERROR: 'Error while submitting registration form',
     LOGIN_ERROR: 'Error while logging in',
+    ADD_TOPIC_ERROR: 'Error while adding new topic',
 };
 
 export interface ApiError {
@@ -66,3 +64,12 @@ export interface ApiError {
     message: string;
     response: { data: { detail: string; status_code: number } };
 }
+
+export const MESSAGE_SERVICE_SEVERITY = {
+    SUCCESS: 'success',
+    INFO: 'info',
+    WARN: 'warn',
+    ERROR: 'error',
+    SECONDARY: 'secondary',
+    CONTRAST: 'contrast',
+};

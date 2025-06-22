@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PAGE_ROUTES, ERROR_MESSAGES } from '../../../shared/constants';
+import {
+    PAGE_ROUTES,
+    ERROR_MESSAGES,
+    MESSAGE_SERVICE_SEVERITY,
+} from '../../../shared/constants';
 import { MessageService } from 'primeng/api';
 import { RequestsService } from '../../../shared/requests/requests.service';
 
@@ -82,7 +86,7 @@ export class QuestionsComponent implements OnInit {
                 });
             } catch (e: any) {
                 this.messageService.add({
-                    severity: 'error',
+                    severity: MESSAGE_SERVICE_SEVERITY.ERROR,
                     detail: ERROR_MESSAGES.QUESTION_SUBMIT_ERROR,
                 });
             }

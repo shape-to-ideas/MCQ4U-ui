@@ -1,9 +1,32 @@
 <div class="h-full bg-gray-300" *ngIf="isUserLoggedIn">
-    <div class="p-4">
+    <div class="p-4" *ngIf="isAdmin">
         <button class="w-full rounded p-2 bg-white text-xs text-black" (click)="openAddTopicModal()">Add Topic</button>
     </div>
     <div class="border-t border-gray-400">
         <p class="text-base font-bold text-center my-2">Topics</p>
-        <p *ngFor="let topic of topics" (click)="redirectToTopic(topic._id.$oid, topic.name)" class="cursor-pointer text-xs mx-4 text-left my-2">{{topic.name}}</p>
+        <p *ngFor="let topic of topics" (click)="redirectToTopic(topic._id.$oid, topic.name)"
+           class="cursor-pointer text-xs mx-4 text-left my-2">{{ topic.name }}</p>
     </div>
+    <p-dialog header="Topic" [modal]="true" [(visible)]="isTopicCreationDialogVisible" [style]="{ width: '25rem' }"
+              [draggable]="false">
+        <span class="p-text-secondary block mb-5">Add a new Topic</span>
+
+        <form [formGroup]="topicFormGroup">
+            <div class="flex align-items-center gap-3 mb-3">
+                <input id="name" class="flex-auto w-full p-2 rounded-md border border-black" placeholder="Name"
+                       formControlName="{{topicFieldName}}" />
+            </div>
+        </form>
+        <div class="flex justify-between gap-2">
+            <button
+                class="flex p-2 border-solid rounded-md border border-black text-black hover:bg-black hover:text-white"
+                (click)="isTopicCreationDialogVisible = false">Cancel
+            </button>
+            <button
+                class="flex p-2 border-solid rounded-md border border-black text-black hover:bg-black hover:text-white"
+                (click)="addTopic()">
+                Save
+            </button>
+        </div>
+    </p-dialog>
 </div>

@@ -5,6 +5,7 @@ import {
     ERROR_MESSAGES,
     FORM_TYPES,
     FormConfigTypes,
+    MESSAGE_SERVICE_SEVERITY,
     PAGE_ROUTES,
 } from '../../../shared/constants';
 import { MessageService } from 'primeng/api';
@@ -141,7 +142,7 @@ export class RegisterComponent {
                 registerFormGroup.controls['confirm_password'].value
             ) {
                 this.messageService.add({
-                    severity: 'error',
+                    severity: MESSAGE_SERVICE_SEVERITY.ERROR,
                     detail: ERROR_MESSAGES.PASSWORD_MISMATCH,
                 });
                 return;
@@ -150,16 +151,22 @@ export class RegisterComponent {
                 ...registerFormGroup.value,
                 is_admin: Boolean(registerFormGroup.value.is_admin),
             };
-            try {
-                const registrationResponse =
-                    await this.requestService.registerUser(registerPayload);
-                console.log(registrationResponse);
-            } catch (e) {
-                this.messageService.add({
-                    severity: 'error',
-                    detail: ERROR_MESSAGES.REGISTRATIONS_ERROR,
+            this.requestService
+                .registerUser(registerPayload)
+                .then(() => {
+                    this.messageService.add({
+                        severity: MESSAGE_SERVICE_SEVERITY.SUCCESS,
+                        detail: 'Registration successful',
+                    });
+                    this.router.navigate([PAGE_ROUTES.LOGIN]);
+                })
+                .catch((error: unknown) => {
+                    console.error(error);
+                    this.messageService.add({
+                        severity: MESSAGE_SERVICE_SEVERITY.ERROR,
+                        detail: ERROR_MESSAGES.REGISTRATIONS_ERROR,
+                    });
                 });
-            }
         }
     }
 
