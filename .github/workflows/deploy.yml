@@ -24,13 +24,13 @@ jobs:
           chmod 600 key.pem
 
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
+          username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-          # If folder doesn't exist, clone the repo
+#           If folder doesn't exist, clone the repo
             if [ ! -d "/home/ubuntu/mcq4u-ui" ]; then
               git clone https://github.com/shape-to-ideas/MCQ4U-ui.git /home/${{ secrets.EC2_HOST }}/mcq4u-ui
             fi
