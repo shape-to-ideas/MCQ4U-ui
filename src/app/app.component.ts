@@ -4,6 +4,7 @@ import { getStorageData, resolveJwtToken } from '../shared/utils/storage';
 import { LOCAL_STORAGE_KEYS } from '../shared/constants';
 import { LoginResponse } from '../shared/requests/response.interface';
 import { UserSessionData } from '../shared/interfaces';
+import { environment } from '../environments/environment';
 
 @Component({
     selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent implements OnInit {
     constructor(private userStore: UserStore) {}
 
     ngOnInit() {
+        console.log('env-var', environment)
         const userStorage = getStorageData(LOCAL_STORAGE_KEYS.USER);
         if (userStorage) {
             const loginDetails = JSON.parse(userStorage) as LoginResponse;
