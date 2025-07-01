@@ -46,7 +46,7 @@ export class RequestsService {
         );
     }
     async getQuestionsByTopicId(topicId: string) {
-        const questionsListApiPath = `${environment.apiUrl}${API_PATHS.QUESTIONS}?topic_id=${topicId}`;
+        const questionsListApiPath = `${environment.apiUrl}${API_PATHS.QUESTIONS}?topic_id=${topicId}&is_active=true`;
         return axios.get(questionsListApiPath);
     }
 
