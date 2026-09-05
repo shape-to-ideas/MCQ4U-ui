@@ -3,6 +3,8 @@ import { jwtDecode } from 'jwt-decode';
 import { UserSessionData } from '../interfaces';
 import { LoginResponse } from '../requests/response.interface';
 
+type ReturnType<T> = T extends (...args: any[] ) => infer R ? R : any 
+
 export function getStorageData(key: string): string {
     return localStorage.getItem(key) ?? '';
 }
