@@ -62,7 +62,7 @@ export class FormsComponent implements OnInit, DoCheck {
     }
 
     submitForm() {
-        this.formGroup?.markAsDirty();
+        this.formGroup?.markAllAsTouched();
         this.submitFormEvent.emit(this.formGroup);
     }
 

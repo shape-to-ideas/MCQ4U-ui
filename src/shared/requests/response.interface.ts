@@ -4,6 +4,10 @@ export interface LoginResponse {
     token: string;
 }
 
+export interface MessageResponse {
+    message: string;
+}
+
 export interface QuestionsResponse extends QuestionsPayload {
     created_at: string;
     created_by: string;
@@ -44,4 +48,11 @@ export interface AttemptedQuestionsResponse extends QuestionsResponse {
     topics: Topic[];
     attempted_questions: AttemptedQuestions[];
     correct_answer: CorrectAnswers[];
+}
+
+export interface StatsResponse {
+    total_topics: number;
+    total_users: number;
+    questions_attempted: number;
+    users_attempted: number;
 }

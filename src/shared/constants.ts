@@ -8,6 +8,8 @@ export const PAGE_ROUTES = {
     REGISTER: 'register',
     QUESTIONS: 'questions',
     ATTEMPT_QUESTIONS: 'attempt-questions',
+    FORGOT_PASSWORD: 'forgot-password',
+    RESET_PASSWORD: 'reset-password',
 };
 
 export enum API_PATHS {
@@ -18,6 +20,9 @@ export enum API_PATHS {
     TOPICS = '/api/v1/topics',
     CREATE_TOPICS = '/api/v1/questions/topics',
     ATTEMPT_QUESTIONS = '/api/v1/user/attempt-questions',
+    FORGOT_PASSWORD = '/api/v1/user/forgot-password',
+    RESET_PASSWORD = '/api/v1/user/reset-password',
+    STATS = '/api/v1/stats',
 }
 
 export const HEADERS = {
@@ -57,6 +62,13 @@ export const ERROR_MESSAGES = {
     REGISTRATIONS_ERROR: 'Error while submitting registration form',
     LOGIN_ERROR: 'Error while logging in',
     ADD_TOPIC_ERROR: 'Error while adding new topic',
+    RESET_PASSWORD_ERROR: 'Error while resetting password',
+};
+
+export const SUCCESS_MESSAGES = {
+    FORGOT_PASSWORD_REQUESTED:
+        'If that email is registered, a password reset link has been sent.',
+    PASSWORD_RESET: 'Password has been reset successfully. Please log in.',
 };
 
 export interface ApiError {

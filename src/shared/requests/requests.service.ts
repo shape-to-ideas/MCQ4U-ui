@@ -12,7 +12,12 @@ import {
     PAGE_ROUTES,
 } from '../constants';
 import axios, { AxiosResponse } from 'axios';
-import { LoginResponse, Topic } from './response.interface';
+import {
+    LoginResponse,
+    MessageResponse,
+    StatsResponse,
+    Topic,
+} from './response.interface';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuestionsPayload } from './request.interface';
@@ -117,5 +122,33 @@ export class RequestsService {
         return axios.post(`${environment.apiUrl}${API_PATHS.CREATE_TOPICS}`, {
             topic_names: topics,
         });
+    }
+
+    async requestPasswordReset(email: string): Promise<MessageResponse> {
+        const forgotPasswordUrl = `${environment.apiUrl}${API_PATHS.FORGOT_PASSWORD}`;
+        const response: AxiosResponse<MessageResponse, any> = await axios.post(
+            forgotPasswordUrl,
+            { email },
+        );
+        return response.data;
+    }
+
+    async resetPassword(
+        token: string,
+        newPassword: string,
+    ): Promise<MessageResponse> {
+        const resetPasswordUrl = `${environment.apiUrl}${API_PATHS.RESET_PASSWORD}`;
+        const response: AxiosResponse<MessageResponse, any> = await axios.post(
+            resetPasswordUrl,
+            { token, new_password: newPassword },
+        );
+        return response.data;
+    }
+
+    async getStats(): Promise<StatsResponse> {
+        const statsUrl = `${environment.apiUrl}${API_PATHS.STATS}`;
+        const response: AxiosResponse<StatsResponse, any> =
+            await axios.get(statsUrl);
+        return response.data;
     }
 }

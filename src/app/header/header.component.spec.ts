@@ -1,22 +1,29 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { HeaderComponent } from './header.component';
+import { UiStore } from '../../shared/store/ui.store';
+
+function createComponent(uiStore: UiStore = new UiStore()) {
+  const topicsStore: any = {};
+  const router: any = {};
+  const userStore: any = {};
+
+  return new HeaderComponent(topicsStore, router, userStore, uiStore);
+}
 
 describe('HeaderComponent', () => {
-    let component: HeaderComponent;
-    let fixture: ComponentFixture<HeaderComponent>;
+  it('should create', () => {
+    expect(createComponent()).toBeTruthy();
+  });
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            declarations: [HeaderComponent],
-        }).compileComponents();
+  describe('toggleSidebar', () => {
+    it('delegates to UiStore so the mobile drawer opens/closes', () => {
+      const uiStore = new UiStore();
+      const component = createComponent(uiStore);
 
-        fixture = TestBed.createComponent(HeaderComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
+      component.toggleSidebar();
+      expect(uiStore.state).toBeTrue();
+
+      component.toggleSidebar();
+      expect(uiStore.state).toBeFalse();
     });
-
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  });
 });

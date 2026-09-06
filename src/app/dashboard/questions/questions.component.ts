@@ -9,6 +9,16 @@ import {
 import { MessageService } from 'primeng/api';
 import { RequestsService } from '../../../shared/requests/requests.service';
 
+interface QuestionFormValue {
+    title: string;
+    optionA: string;
+    optionB: string;
+    optionC: string;
+    optionD: string;
+    correctAnswer: string;
+    tags: string[];
+}
+
 @Component({
     selector: 'app-questions',
     templateUrl: './questions.component.html',
@@ -18,7 +28,7 @@ export class QuestionsComponent implements OnInit {
     topicName = '';
     topicId = '';
     formGroup: FormGroup;
-    optionsFieldCssString = 'w-80 p-2 my-2 rounded-md border-2 border-black';
+    optionsFieldCssString = 'w-full sm:w-80 p-2 my-2 rounded-lg border border-primary-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent';
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -35,7 +45,7 @@ export class QuestionsComponent implements OnInit {
                     optionC: new FormControl('', [Validators.required]),
                     optionD: new FormControl('', [Validators.required]),
                     correctAnswer: new FormControl('', [Validators.required]),
-                    tags: new FormControl(''),
+                    tags: new FormControl<string[]>([]),
                 }),
             ]),
         });
@@ -61,16 +71,17 @@ export class QuestionsComponent implements OnInit {
                 optionC: new FormControl(''),
                 optionD: new FormControl(''),
                 correctAnswer: new FormControl(''),
-                tags: new FormControl(''),
+                tags: new FormControl<string[]>([]),
             }),
         );
     }
 
     async submitForm() {
+        this.formGroup.markAllAsTouched();
         if (this.formGroup.valid) {
             try {
                 const questionsPayload = this.formGroup.value.question.map(
-                    (value: Record<string, string>) => {
+                    (value: QuestionFormValue) => {
                         return this.mapQuestionsFormPayload(value);
                     },
                 );
@@ -93,31 +104,31 @@ export class QuestionsComponent implements OnInit {
         }
     }
 
-    mapQuestionsFormPayload(value: Record<string, string>) {
+    mapQuestionsFormPayload(value: QuestionFormValue) {
         return {
-            title: value['title'].trim(),
+            title: value.title.trim(),
             options: [
                 {
                     key: 'A',
-                    title: value['optionA'],
+                    title: value.optionA,
                 },
                 {
                     key: 'B',
-                    title: value['optionB'],
+                    title: value.optionB,
                 },
                 {
                     key: 'C',
-                    title: value['optionC'],
+                    title: value.optionC,
                 },
                 {
                     key: 'D',
-                    title: value['optionD'],
+                    title: value.optionD,
                 },
             ],
-            tags: value['tags'],
+            tags: (value.tags || []).join(' '),
             is_active: true,
             topic_id: this.topicId,
-            answer: value['correctAnswer'],
+            answer: value.correctAnswer,
         };
     }
 }

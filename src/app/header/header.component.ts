@@ -4,6 +4,7 @@ import { LOCAL_STORAGE_KEYS, PAGE_ROUTES } from '../../shared/constants';
 import { deleteStorageData } from '../../shared/utils/storage';
 import { TopicsStore } from '../../shared/store/topics.store';
 import { UserStore } from '../../shared/store/user.store';
+import { UiStore } from '../../shared/store/ui.store';
 
 @Component({
     selector: 'app-header',
@@ -16,6 +17,7 @@ export class HeaderComponent implements OnInit {
         private topicsStore: TopicsStore,
         private router: Router,
         private userStore: UserStore,
+        private uiStore: UiStore,
     ) {}
 
     ngOnInit() {
@@ -33,5 +35,9 @@ export class HeaderComponent implements OnInit {
 
     redirectToHome() {
         this.router.navigate([PAGE_ROUTES.DASHBOARD]);
+    }
+
+    toggleSidebar() {
+        this.uiStore.toggleSidebar();
     }
 }

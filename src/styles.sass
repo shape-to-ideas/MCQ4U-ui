@@ -10,11 +10,65 @@ html
 
 body
     height: 100%
+    font-family: "Plus Jakarta Sans", sans-serif
+    background-color: #ffffff
+    color: #2e3f22
 
 .two-grid-layout
     display: grid
-    grid-template-columns: repeat(2, 1fr)
+    grid-template-columns: repeat(1, 1fr)
+    @media (min-width: 640px)
+        grid-template-columns: repeat(2, 1fr)
     p
-        //margin-right: 5rem
-        width: 18rem
+        width: 100%
         margin-bottom: 1rem
+
+// --- PrimeNG accent overrides: swap the baked-in blue theme for our olive/lime brand ---
+.p-dialog
+    border-radius: 0.75rem
+    overflow: hidden
+    .p-dialog-header
+        background-color: #2e3f22
+        color: #ffffff
+        padding: 1.25rem 1.5rem
+    .p-dialog-header-icon
+        color: #ffffff
+        &:hover
+            background-color: rgba(255, 255, 255, 0.15)
+            color: #ffffff
+    .p-dialog-content
+        padding: 1.5rem
+
+.p-toast
+    .p-toast-message
+        border-radius: 0.75rem
+    .p-toast-message-success
+        background-color: #f6fbec
+        border-left: 6px solid #82ab36
+        color: #2e3f22
+    .p-toast-message-error
+        border-left: 6px solid #b91c1c
+    .p-toast-icon-close
+        color: inherit
+
+.p-progress-spinner-circle
+    stroke: #2e3f22 !important
+
+.p-chips
+    .p-chips-multiple-container
+        width: 100%
+        border-radius: 0.5rem
+        border: 1px solid #e1e8d6
+        padding: 0.375rem 0.5rem
+        &:not(.p-disabled).p-focus
+            border-color: #2e3f22
+            box-shadow: 0 0 0 2px rgba(46, 63, 34, 0.2)
+    .p-chips-token
+        background-color: #b2d66a
+        color: #232f1a
+        border-radius: 9999px
+        padding: 0.25rem 0.75rem
+    .p-chips-token-icon
+        margin-left: 0.5rem
+    .p-chips-input-token input
+        font-family: "Plus Jakarta Sans", sans-serif

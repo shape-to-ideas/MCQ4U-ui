@@ -86,7 +86,7 @@ export class AttemptQuestionsComponent implements OnInit {
     }
 
     async submitForm() {
-        this.formGroup?.markAsDirty();
+        this.formGroup?.markAllAsTouched();
         if (this.formGroup?.valid) {
             const questionsValue: QuestionAttemptFormFields[] =
                 this.formGroup.get('question')?.value;
