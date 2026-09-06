@@ -8,7 +8,10 @@ import { MESSAGE_SERVICE_SEVERITY, PAGE_ROUTES } from '../../shared/constants';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { RequestsService } from '../../shared/requests/requests.service';
-import { QuestionsResponse } from '../../shared/requests/response.interface';
+import {
+  QuestionsResponse,
+  StatsResponse,
+} from '../../shared/requests/response.interface';
 import { UserStore } from '../../shared/store/user.store';
 import { UserSessionData } from '../../shared/interfaces';
 
@@ -24,6 +27,8 @@ export class DashboardComponent implements OnInit {
   showLoader = false;
   isAdmin = false;
   showBanner = false;
+  stats: StatsResponse | null = null;
+  showStatsLoader = false;
 
   constructor(
     private requestsService: RequestsService,
@@ -44,6 +49,7 @@ export class DashboardComponent implements OnInit {
           await this.handleActiveParam(params);
         } else {
           this.showBanner = true;
+          await this.loadStats();
         }
       });
     } catch (err: unknown) {
@@ -77,6 +83,20 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  async loadStats(): Promise<void> {
+    try {
+      this.showStatsLoader = true;
+      this.stats = await this.requestsService.getStats();
+      this.showStatsLoader = false;
+    } catch (error) {
+      this.showStatsLoader = false;
+      this.messageService.add({
+        severity: MESSAGE_SERVICE_SEVERITY.ERROR,
+        summary: 'Something went wrong.',
+      });
+    }
+  }
+
   async handleActiveParam(params: Params): Promise<void> {
     try {
       this.topicId = params['topicId'];
@@ -94,6 +114,10 @@ export class DashboardComponent implements OnInit {
         summary: 'Something went wrong.',
       });
     }
+  }
+
+  splitTags(tags: string): string[] {
+    return tags ? tags.trim().split(/\s+/).filter(Boolean) : [];
   }
 
   // REMOVE

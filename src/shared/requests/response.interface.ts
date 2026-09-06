@@ -49,3 +49,10 @@ export interface AttemptedQuestionsResponse extends QuestionsResponse {
     attempted_questions: AttemptedQuestions[];
     correct_answer: CorrectAnswers[];
 }
+
+export interface StatsResponse {
+    total_topics: number;
+    total_users: number;
+    questions_attempted: number;
+    users_attempted: number;
+}

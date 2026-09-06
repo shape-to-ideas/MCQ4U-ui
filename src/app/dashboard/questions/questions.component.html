@@ -1,13 +1,13 @@
-<div class="px-10 py-10">
-    <h1 class="text-center w-full mb-2 text-3xl font-bold">{{ topicName }}</h1>
+<div class="px-4 sm:px-10 py-6 sm:py-10">
+    <h1 class="text-center w-full mb-6 text-2xl sm:text-3xl font-extrabold text-primary">{{ topicName }}</h1>
     <form [formGroup]="formGroup" class="w-full">
         <div formArrayName="question">
             <div
                 *ngFor="let questionGroup of question?.controls; let i = index"
-                [formGroupName]="i" class="my-10"
+                [formGroupName]="i" class="my-6 bg-white border border-primary-100 rounded-xl shadow-sm p-6"
             >
-                <h3>Question - {{ i + 1 }}</h3>
-                <textarea class="w-full p-2 rounded-md border-2 border-black" formControlName="title"
+                <h3 class="text-primary font-semibold mb-2">Question - {{ i + 1 }}</h3>
+                <textarea class="w-full p-2 rounded-lg border border-primary-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" formControlName="title"
                           placeholder="Title"></textarea>
                 <ng-container [ngTemplateOutlet]="formValidations"
                               [ngTemplateOutletContext]="{questionGroup: questionGroup, fieldName: 'title'}"></ng-container>
@@ -49,14 +49,14 @@
                                       [ngTemplateOutletContext]="{questionGroup: questionGroup, fieldName: 'correctAnswer'}"></ng-container>
                     </div>
                 </div>
-                <input class="w-full p-2 my-2 rounded-md border-2 border-black" type="text" formControlName="tags"
-                       placeholder="tags" />
+                <p-chips class="tags-chips block w-full my-2" formControlName="tags" separator=" "
+                         placeholder="Type a tag and press space" [addOnBlur]="true" styleClass="w-full"></p-chips>
             </div>
         </div>
         <div class="flex justify-between mt-5">
-            <button class="border p-2 rounded bg-gray-300 text-black font-bold" (click)="addQuestion()">Add Question
+            <button class="border border-primary rounded-lg p-2 text-primary font-bold hover:bg-primary hover:text-white transition-colors" (click)="addQuestion()">Add Question
             </button>
-            <button class="border p-2 rounded bg-black text-white font-bold" (click)="submitForm()">Submit
+            <button class="rounded-lg p-2 bg-secondary text-primary-800 font-bold hover:bg-secondary-400 transition-colors" (click)="submitForm()">Submit
             </button>
         </div>
 

@@ -12,7 +12,12 @@ import {
     PAGE_ROUTES,
 } from '../constants';
 import axios, { AxiosResponse } from 'axios';
-import { LoginResponse, MessageResponse, Topic } from './response.interface';
+import {
+    LoginResponse,
+    MessageResponse,
+    StatsResponse,
+    Topic,
+} from './response.interface';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuestionsPayload } from './request.interface';
@@ -137,6 +142,13 @@ export class RequestsService {
             resetPasswordUrl,
             { token, new_password: newPassword },
         );
+        return response.data;
+    }
+
+    async getStats(): Promise<StatsResponse> {
+        const statsUrl = `${environment.apiUrl}${API_PATHS.STATS}`;
+        const response: AxiosResponse<StatsResponse, any> =
+            await axios.get(statsUrl);
         return response.data;
     }
 }

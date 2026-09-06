@@ -1,32 +1,42 @@
-<div class="h-full bg-gray-300" *ngIf="isUserLoggedIn">
-    <div class="p-4" *ngIf="isAdmin">
-        <button class="w-full rounded p-2 bg-white text-xs text-black" (click)="openAddTopicModal()">Add Topic</button>
+<ng-container *ngIf="isUserLoggedIn">
+    <!-- Mobile backdrop -->
+    <div class="fixed inset-0 bg-black/40 z-20 md:hidden"
+         *ngIf="isMobileSidebarOpen" (click)="closeMobileSidebar()"></div>
+
+    <div class="h-full w-64 md:w-56 bg-white border-r border-primary-100 fixed md:static top-0 left-0 z-30 md:z-auto
+                transform transition-transform duration-200 ease-in-out overflow-y-auto pt-16 md:pt-0
+                {{ isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full' }} md:translate-x-0">
+        <div class="p-4" *ngIf="isAdmin">
+            <button class="w-full rounded-lg p-2 bg-secondary text-xs font-semibold text-primary-800 hover:bg-secondary-400 transition-colors"
+                    (click)="openAddTopicModal()">Add Topic</button>
+        </div>
+        <div class="border-t border-primary-100 pt-2">
+            <p class="text-xs font-bold uppercase tracking-wide text-primary-400 text-center my-2">Topics</p>
+            <p *ngFor="let topic of topics" (click)="redirectToTopic(topic._id.$oid, topic.name)"
+               class="cursor-pointer text-sm mx-3 my-1 px-3 py-2 rounded-lg text-left text-primary-700 hover:bg-secondary-50 hover:text-primary transition-colors">{{ topic.name }}</p>
+        </div>
     </div>
-    <div class="border-t border-gray-400">
-        <p class="text-base font-bold text-center my-2">Topics</p>
-        <p *ngFor="let topic of topics" (click)="redirectToTopic(topic._id.$oid, topic.name)"
-           class="cursor-pointer text-xs mx-4 text-left my-2">{{ topic.name }}</p>
-    </div>
+
     <p-dialog header="Topic" [modal]="true" [(visible)]="isTopicCreationDialogVisible" [style]="{ width: '25rem' }"
               [draggable]="false">
         <span class="p-text-secondary block mb-5">Add a new Topic</span>
 
         <form [formGroup]="topicFormGroup">
             <div class="flex align-items-center gap-3 mb-3">
-                <input id="name" class="flex-auto w-full p-2 rounded-md border border-black" placeholder="Name"
-                       formControlName="{{topicFieldName}}" />
+                <input id="name" class="flex-auto w-full p-2 rounded-lg border border-primary-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                       placeholder="Name" formControlName="{{topicFieldName}}" />
             </div>
         </form>
         <div class="flex justify-between gap-2">
             <button
-                class="flex p-2 border-solid rounded-md border border-black text-black hover:bg-black hover:text-white"
+                class="flex p-2 border rounded-lg border-primary text-primary hover:bg-primary hover:text-white transition-colors"
                 (click)="isTopicCreationDialogVisible = false">Cancel
             </button>
             <button
-                class="flex p-2 border-solid rounded-md border border-black text-black hover:bg-black hover:text-white"
+                class="flex p-2 rounded-lg bg-secondary text-primary-800 font-semibold hover:bg-secondary-400 transition-colors"
                 (click)="addTopic()">
                 Save
             </button>
         </div>
     </p-dialog>
-</div>
+</ng-container>

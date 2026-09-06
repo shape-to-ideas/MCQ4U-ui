@@ -1,19 +1,45 @@
-<div class="w-full px-10 my-10">
-    <h2 class="mb-4 text-center text-3xl font-bold">{{ topicName }}</h2>
+<div class="w-full px-4 sm:px-10 my-6 sm:my-10">
+    <h2 class="mb-6 text-center text-2xl sm:text-3xl font-extrabold text-primary">{{ topicName }}</h2>
     <ng-container *ngIf="showBanner; else listActions">
-        <p class="text-4xl">
+        <p class="text-lg sm:text-2xl md:text-3xl text-primary-700 bg-secondary-50 border border-secondary-200 rounded-2xl p-5 sm:p-8 leading-relaxed">
             Welcome to MCQ4U. We assist you in preparing for exams with relevant topics so that you don't have to look any
-            further than this   
+            further than this
         </p>
+        <div class="text-center w-full mt-6" *ngIf="showStatsLoader">
+            <p-progressSpinner ariaLabel="loading" />
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-6" *ngIf="stats && !showStatsLoader">
+            <div class="bg-white border border-primary-100 rounded-xl shadow-sm p-4 text-center">
+                <p class="text-2xl sm:text-3xl font-extrabold text-primary">{{ stats.total_topics }}</p>
+                <p class="text-xs sm:text-sm text-primary-600 mt-1">Topics</p>
+            </div>
+            <div class="bg-white border border-primary-100 rounded-xl shadow-sm p-4 text-center">
+                <p class="text-2xl sm:text-3xl font-extrabold text-primary">{{ stats.total_users }}</p>
+                <p class="text-xs sm:text-sm text-primary-600 mt-1">Users</p>
+            </div>
+            <div class="bg-white border border-primary-100 rounded-xl shadow-sm p-4 text-center">
+                <p class="text-2xl sm:text-3xl font-extrabold text-primary">{{ stats.questions_attempted }}</p>
+                <p class="text-xs sm:text-sm text-primary-600 mt-1">Questions Attempted</p>
+            </div>
+            <div class="bg-white border border-primary-100 rounded-xl shadow-sm p-4 text-center">
+                <p class="text-2xl sm:text-3xl font-extrabold text-primary">{{ stats.users_attempted }}</p>
+                <p class="text-xs sm:text-sm text-primary-600 mt-1">Users Who Attempted</p>
+            </div>
+        </div>
     </ng-container>
-    <div class="flex flex-row w-full mb-4" *ngFor="let question of questionsList; index as i">
-        <div class="flex pt-0.5">{{ i + 1 }}.</div>
+    <div class="flex flex-row w-full mb-4 bg-white border border-primary-100 rounded-xl shadow-sm p-4"
+         *ngFor="let question of questionsList; index as i">
+        <div class="flex pt-0.5 text-primary font-semibold">{{ i + 1 }}.</div>
         <div class="flex flex-col ml-4">
-            <p class="flex text-lg">{{ question.title }}</p>
+            <p class="flex text-lg text-primary-800">{{ question.title }}</p>
             <div class="two-grid-layout">
-                <p class="text-sm" *ngFor="let option of question.options">
+                <p class="text-sm text-primary-600" *ngFor="let option of question.options">
                     {{ option.key }}. {{ option.title }}
                 </p>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-3" *ngIf="splitTags(question.tags).length">
+                <span class="text-xs px-2 py-1 rounded-full bg-secondary-50 text-primary-700 border border-secondary-200"
+                      *ngFor="let tag of splitTags(question.tags)">{{ tag }}</span>
             </div>
         </div>
     </div>
@@ -22,14 +48,14 @@
     </div>
     <ng-template #listActions>
         <ng-container *ngIf="isAdmin && !showBanner">
-            <p *ngIf="!questionsList.length && !showLoader">This is still a fresh space. Add question to this topics.</p>
-            <button class="border-2 mt-5 border-black rounded p-2 bg-white text-black text-sm"
+            <p class="text-primary-600" *ngIf="!questionsList.length && !showLoader">This is still a fresh space. Add question to this topics.</p>
+            <button class="border border-primary mt-5 rounded-lg p-2 text-primary text-sm font-semibold hover:bg-primary hover:text-white transition-colors"
                     (click)="redirectToCreateQuestion()">Add Questions
             </button>
         </ng-container>
         <ng-container *ngIf="!isAdmin && !showBanner">
-            <p *ngIf="!questionsList.length && !showLoader">No Questions added to this Topic by the Author</p>
-            <button *ngIf="questionsList.length" class="border-2 mt-5 border-black rounded p-2 bg-black text-white text-sm"
+            <p class="text-primary-600" *ngIf="!questionsList.length && !showLoader">No Questions added to this Topic by the Author</p>
+            <button *ngIf="questionsList.length" class="mt-5 rounded-lg p-2 bg-secondary text-primary-800 text-sm font-semibold hover:bg-secondary-400 transition-colors"
                     (click)="redirectToAttemptQuestion()">Attempt Questions
             </button>
         </ng-container>
