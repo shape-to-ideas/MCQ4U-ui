@@ -67,6 +67,7 @@ export class QuestionsComponent implements OnInit {
     }
 
     async submitForm() {
+        this.formGroup.markAllAsTouched();
         if (this.formGroup.valid) {
             try {
                 const questionsPayload = this.formGroup.value.question.map(

@@ -40,6 +40,7 @@ export class DashboardComponent implements OnInit {
       // this.vcRef.createEmbeddedView(this.listActions);
       this.activatedRoute.queryParams.subscribe(async (params: Params) => {
         if (Object.keys(params).length > 1) {
+          this.showBanner = false;
           await this.handleActiveParam(params);
         } else {
           this.showBanner = true;
@@ -70,7 +71,6 @@ export class DashboardComponent implements OnInit {
 
   subscribeUserStore(): void {
     this.userStore.state$.subscribe((user: UserSessionData) => {
-      console.log('----user', user);
       if (user.id) {
         this.isAdmin = user.is_admin;
       }

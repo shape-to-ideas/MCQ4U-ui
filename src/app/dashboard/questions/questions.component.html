@@ -64,7 +64,7 @@
 </div>
 
 <ng-template #formValidations let-questionGroup='questionGroup' let-fieldName='fieldName'>
-    <div *ngIf="questionGroup.dirty">
+    <div *ngIf="questionGroup.get([fieldName])?.touched">
         <div class="text-sm text-red-400"
              *ngIf="questionGroup.get([fieldName])?.hasError('required')">
             This field is required

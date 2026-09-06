@@ -30,7 +30,7 @@
                       formControlName="{{formInput.name}}"></textarea>
         </ng-template>
         <div *ngFor="let validation of formInput.validations">
-            <div *ngIf="formGroup.controls[formInput.name].invalid && formGroup.controls[formInput.name].dirty"
+            <div *ngIf="formGroup.controls[formInput.name].invalid && formGroup.controls[formInput.name].touched"
                  class="alert">
                 <div class="text-sm text-red-400"
                      *ngIf="formGroup.controls[formInput.name].hasError(validation.name.toLowerCase())">

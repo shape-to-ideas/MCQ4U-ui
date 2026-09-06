@@ -14,7 +14,7 @@
                             {{ option.title }}
                         </p>
                     </div>
-                    <div *ngIf="formGroup.dirty">
+                    <div *ngIf="question.get(['attemptedOption'])?.touched">
                         <div class="text-sm text-red-400"
                              *ngIf="question.get(['attemptedOption'])?.hasError('required')">
                             This field is required
