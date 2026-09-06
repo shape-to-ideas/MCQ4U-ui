@@ -12,6 +12,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RequestsService } from './requests/requests.service';
 import { TopicsStore } from './store/topics.store';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { ChipsModule } from 'primeng/chips';
 
 @NgModule({
     declarations: [FormsComponent, FormArrayComponent],
@@ -22,6 +23,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
         ToastModule,
         DynamicDialogModule,
         BrowserAnimationsModule,
+        ChipsModule,
     ],
     providers: [
         SharedService,
@@ -39,6 +41,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
         ToastModule,
         DialogModule,
         ProgressSpinnerModule,
+        ChipsModule,
     ],
 })
 export class SharedModule {}

@@ -7,6 +7,7 @@ import {
 } from '../../shared/constants';
 import { TopicsStore } from '../../shared/store/topics.store';
 import { UserStore } from '../../shared/store/user.store';
+import { UiStore } from '../../shared/store/ui.store';
 import { Topic } from '../../shared/requests/response.interface';
 import { RequestsService } from '../../shared/requests/requests.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -22,6 +23,7 @@ export class SidebarComponent implements OnInit {
     topics: Topic[] = [];
     isAdmin = false;
     isTopicCreationDialogVisible = false;
+    isMobileSidebarOpen = false;
     readonly topicFieldName = 'topicName';
     topicFormGroup: FormGroup = new FormGroup({
         [this.topicFieldName]: new FormControl('', Validators.required),
@@ -32,6 +34,7 @@ export class SidebarComponent implements OnInit {
         private router: Router,
         private userStore: UserStore,
         private messageService: MessageService,
+        private uiStore: UiStore,
     ) {}
 
     ngOnInit() {
@@ -50,6 +53,14 @@ export class SidebarComponent implements OnInit {
         this.topicsStore.state$.subscribe((topicState) => {
             this.topics = topicState;
         });
+
+        this.uiStore.state$.subscribe((isOpen) => {
+            this.isMobileSidebarOpen = isOpen;
+        });
+    }
+
+    closeMobileSidebar() {
+        this.uiStore.closeSidebar();
     }
 
     openAddTopicModal() {
@@ -80,6 +91,7 @@ export class SidebarComponent implements OnInit {
         this.router.navigate([PAGE_ROUTES.DASHBOARD], {
             queryParams: { topicId, topicName },
         });
+        this.uiStore.closeSidebar();
     }
 
     addTopicToStore(topics: Topic[]) {

@@ -1,7 +1,9 @@
-<div class="flex justify-center flex-col mt-20 mb-1 ml-40 mr-40">
-    <h1 class="flex w-full justify-center font-bold text-3xl">Register</h1>
-    <app-forms [formConfigs]="registerFormConfigs" (submitFormEvent)="submitRegistration($event)"></app-forms>
+<div class="flex justify-center items-center min-h-[80vh] px-4">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-lg border border-primary-100 p-8">
+        <h1 class="flex w-full justify-center font-extrabold text-3xl text-primary mb-6">Register</h1>
+        <app-forms [formConfigs]="registerFormConfigs" (submitFormEvent)="submitRegistration($event)"></app-forms>
 
-    <button class="border p-2 rounded bg-gray-300 text-black my-5 font-bold" (click)="navigateToLogin()">Login</button>
+        <button class="w-full border border-primary text-primary rounded-lg p-2 my-5 font-bold hover:bg-primary hover:text-white transition-colors" (click)="navigateToLogin()">Login</button>
+    </div>
 </div>
 

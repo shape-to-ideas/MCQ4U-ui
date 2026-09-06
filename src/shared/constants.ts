@@ -22,6 +22,7 @@ export enum API_PATHS {
     ATTEMPT_QUESTIONS = '/api/v1/user/attempt-questions',
     FORGOT_PASSWORD = '/api/v1/user/forgot-password',
     RESET_PASSWORD = '/api/v1/user/reset-password',
+    STATS = '/api/v1/stats',
 }
 
 export const HEADERS = {
