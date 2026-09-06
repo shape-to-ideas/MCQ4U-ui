@@ -4,6 +4,10 @@ export interface LoginResponse {
     token: string;
 }
 
+export interface MessageResponse {
+    message: string;
+}
+
 export interface QuestionsResponse extends QuestionsPayload {
     created_at: string;
     created_by: string;

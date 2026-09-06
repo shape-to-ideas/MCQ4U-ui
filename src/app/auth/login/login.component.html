@@ -1,6 +1,7 @@
 <div class="flex justify-center flex-col mt-20 mb-1 ml-40 mr-40">
     <h1 class="flex w-full justify-center font-bold text-3xl">Login</h1>
     <app-forms class="" [formConfigs]="loginFormConfigs" (submitFormEvent)="submitLogin($event)"></app-forms>
+    <a class="flex w-full justify-center cursor-pointer text-sm underline" (click)="navigateToForgotPassword()">Forgot Password?</a>
     <button class="border p-2 rounded bg-gray-300 text-black my-5 font-bold" (click)="navigateToRegister()">Register</button>
 </div>
 
